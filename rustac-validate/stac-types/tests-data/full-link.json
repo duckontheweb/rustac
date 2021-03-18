@@ -1,0 +1,6 @@
+{
+    "rel": "collection",
+    "href": "./collection.json",
+    "type": "application/json",
+    "title": "Simple Example Collection"
+}
