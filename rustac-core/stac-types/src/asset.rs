@@ -1,19 +1,17 @@
 use serde::{Deserialize, Serialize};
 use serde_json;
 
-/// Implementation of a STAC Link.
 #[derive(Serialize, Deserialize)]
-pub struct Link {
+pub struct Asset {
     pub href: String,
-    pub rel: String,
+    pub title: Option<String>,
+    pub description: Option<String>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
-    pub title: Option<String>,
-    #[serde(flatten)]
-    pub extra_fields: serde_json::Value,
+    pub roles: Option<Vec<String>>
 }
 
-impl Link {
+impl Asset {
     /// Serializes the instance to a JSON string
     pub fn to_json(&self) -> serde_json::Result<String> {
         Ok(serde_json::to_string(&self)?)
