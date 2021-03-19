@@ -18,3 +18,4 @@ pub mod collection;
 pub mod catalog;
 pub mod item_collection;
 pub mod provider;
+pub mod common_metadata;
