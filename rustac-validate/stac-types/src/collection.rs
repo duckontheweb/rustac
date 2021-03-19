@@ -1,17 +1,11 @@
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
 use serde_json;
 
 use super::link::Link;
 use super::asset::Asset;
-use std::collections::HashMap;
-
-#[derive(Serialize, Deserialize)]
-pub struct Provider {
-    name: String,
-    description: Option<String>,
-    roles: Option<Vec<String>>,
-    url: Option<String>
-}
+use super::provider::Provider;
 
 
 #[derive(Serialize, Deserialize)]
