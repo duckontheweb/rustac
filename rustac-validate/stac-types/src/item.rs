@@ -6,6 +6,7 @@ use serde_json;
 use super::link::Link;
 use super::asset::Asset;
 use super::common_metadata::CommonMetadata;
+use crate::extensions::ItemExtensionProperties;
 
 
 #[derive(Serialize, Deserialize)]
@@ -13,7 +14,9 @@ pub struct ItemProperties {
     #[serde(flatten)]
     pub common: CommonMetadata,
     #[serde(flatten)]
-    pub extension: serde_json::Value,
+    pub extension: ItemExtensionProperties,
+    #[serde(flatten)]
+    pub extra_fields: serde_json::Value,
 }
 
 /// Implementation of a STAC Item.
@@ -70,7 +73,9 @@ mod test {
         let item = Item::from_json(data.as_str()).unwrap();
 
         assert_eq!(item.properties.common.platform, Some(String::from("cool_sat2")));
-        assert_eq!(item.properties.extension["proj:epsg"], 32659);
+        assert_eq!(item.properties.extension.view.sun_elevation, Some(54.9));
+        assert_eq!(item.properties.extension.proj.shape, Some(vec![5558, 9559]));
+        assert_eq!(item.properties.extension.sci.doi, Some(String::from("10.5061/dryad.s2v81.2/27.2")));
     }
 
     #[test]
