@@ -85,4 +85,12 @@ mod test {
         
         assert_eq!(item.properties.common.constellation, Some(String::from("ion")));
     }
+
+    #[test]
+    fn test_scientific_extension_item() {
+        let data = get_test_example("extensions/scientific/item.json");
+        let item = Item::from_json(data.as_str()).unwrap();
+
+        assert_eq!(item.links[2].rel, String::from("cite-as"));
+    }
 }

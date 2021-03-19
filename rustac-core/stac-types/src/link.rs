@@ -10,7 +10,7 @@ pub struct Link {
     pub type_: Option<String>,
     pub title: Option<String>,
     #[serde(flatten)]
-    pub extra_fields: serde_json::Value,
+    pub other: serde_json::Value,
 }
 
 impl Link {

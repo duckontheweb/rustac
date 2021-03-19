@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 use serde_json;
 
+use crate::extensions::AssetExtensionProperties;
+
 #[derive(Serialize, Deserialize)]
 pub struct Asset {
     pub href: String,
@@ -8,7 +10,9 @@ pub struct Asset {
     pub description: Option<String>,
     #[serde(rename = "type")]
     pub type_: Option<String>,
-    pub roles: Option<Vec<String>>
+    pub roles: Option<Vec<String>>,
+    #[serde(flatten)]
+    pub extensions: AssetExtensionProperties,
 }
 
 impl Asset {

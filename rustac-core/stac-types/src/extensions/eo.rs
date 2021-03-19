@@ -10,7 +10,18 @@ pub struct BandsObject {
 }
 
 #[derive(Serialize, Deserialize)]
+pub struct EoCollectionProperties {}
+
+#[derive(Serialize, Deserialize)]
 pub struct EoItemProperties {
+    #[serde(rename = "eo:bands")]
+    pub bands: Option<Vec<BandsObject>>,
+    #[serde(rename = "eo:cloud_cover")]
+    pub cloud_cover: Option<f32>
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct EoAssetProperties {
     #[serde(rename = "eo:bands")]
     pub bands: Option<Vec<BandsObject>>,
     #[serde(rename = "eo:cloud_cover")]

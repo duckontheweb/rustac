@@ -6,7 +6,7 @@ use serde_json;
 use super::link::Link;
 use super::asset::Asset;
 use super::provider::Provider;
-
+use crate::extensions::CollectionExtensionProperties;
 
 #[derive(Serialize, Deserialize)]
 pub struct SpatialExtent {
@@ -41,7 +41,9 @@ pub struct Collection {
     links: Vec<Link>,
     assets: Option<HashMap<String, Asset>>,
     #[serde(flatten)]
-    pub extra_fields: serde_json::Value,
+    pub extensions: CollectionExtensionProperties,
+    #[serde(flatten)]
+    pub other: serde_json::Value,
 }
 
 impl Collection {
@@ -80,5 +82,18 @@ mod tests {
         let collection = Collection::from_json(data.as_str()).unwrap();
 
         assert_eq!(collection.id, String::from("sentinel-2"))
+    }
+
+    #[test]
+    fn test_scientific_extension_collection() {
+        let data = get_test_example("extensions/scientific/collection.json");
+        let collection = Collection::from_json(data.as_str()).unwrap();
+
+        assert_eq!(
+            collection.extensions.sci.citation, 
+            Some(String::from("Vega GC, Pertierra LR, Olalla-Tárraga MÁ (2017) \
+            Data from: MERRAclim, a high-resolution global dataset of remotely \
+            sensed bioclimatic variables for ecological modelling. Dryad Digital Repository."))
+        )
     }
 }
