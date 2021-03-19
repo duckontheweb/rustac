@@ -19,6 +19,8 @@ pub struct Item {
     pub links: Vec<Link>,
     pub assets: HashMap<String, Asset>,
     pub collection: Option<String>,
+    #[serde(flatten)]
+    pub extra_fields: serde_json::Value,
 }
 
 impl Item {
