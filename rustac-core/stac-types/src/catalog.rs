@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
-use serde_json;
+use serde_json::Value;
 
 use super::link::Link;
 
@@ -13,15 +13,16 @@ pub struct Catalog {
     id: String,
     title: Option<String>,
     description: String,
-    summaries: Option<HashMap<String, serde_json::Value>>,
+    summaries: Option<HashMap<String, Value>>,
     links: Option<Vec<Link>>,
     #[serde(flatten)]
-    pub extra_fields: serde_json::Value,
+    pub extra_fields: Value,
 }
 
 #[cfg(test)]
 mod tests {
     use std::fs;
+    use serde_json;
     use crate::Catalog;
 
     fn get_test_example(filename: &str) -> String {

@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
-use serde_json;
+use serde_json::Value;
 
 use super::link::Link;
 use super::asset::Asset;
@@ -16,7 +16,7 @@ pub struct ItemProperties {
     #[serde(flatten)]
     pub extension: ItemExtensionProperties,
     #[serde(flatten)]
-    pub extra_fields: serde_json::Value,
+    pub extra_fields: Value,
 }
 
 /// Implementation of a STAC Item.
@@ -27,14 +27,14 @@ pub struct Item {
     pub id: String,
     #[serde(rename = "type")]
     pub type_: String,
-    pub geometry: serde_json::Value,
+    pub geometry: Value,
     pub bbox: Vec<f32>,
     pub properties: ItemProperties,
     pub links: Vec<Link>,
     pub assets: HashMap<String, Asset>,
     pub collection: Option<String>,
     #[serde(flatten)]
-    pub extra_fields: serde_json::Value,
+    pub other: Value,
 }
 
 #[cfg(test)]

@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
-use serde_json;
+use serde_json::Value;
 
 use super::link::Link;
 use super::asset::Asset;
@@ -37,18 +37,19 @@ pub struct Collection {
     license: String,
     providers: Option<Vec<Provider>>,
     extent: Extent,
-    summaries: Option<HashMap<String, serde_json::Value>>,
+    summaries: Option<HashMap<String, Value>>,
     links: Vec<Link>,
     assets: Option<HashMap<String, Asset>>,
     #[serde(flatten)]
     pub extensions: CollectionExtensionProperties,
     #[serde(flatten)]
-    pub other: serde_json::Value,
+    pub other: Value,
 }
 
 #[cfg(test)]
 mod tests {
     use std::fs;
+    use serde_json;
     use crate::Collection;
 
     fn get_test_example(filename: &str) -> String {
