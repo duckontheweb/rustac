@@ -7,7 +7,7 @@ use serde_json::Value;
 use super::link::Link;
 use super::asset::Asset;
 use super::common_metadata::CommonMetadata;
-use crate::extensions::ItemExtensionProperties;
+use super::extensions::ItemExtensionProperties;
 
 
 #[derive(Serialize, Deserialize)]

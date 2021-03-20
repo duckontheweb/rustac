@@ -1,7 +1,8 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use crate::extensions::AssetExtensionProperties;
+use super::extensions::AssetExtensionProperties;
+use super::common_metadata::CommonMetadata;
 
 #[derive(Serialize, Deserialize)]
 pub struct Asset {
@@ -11,6 +12,8 @@ pub struct Asset {
     #[serde(rename = "type")]
     pub type_: Option<String>,
     pub roles: Option<Vec<String>>,
+    #[serde(flatten)]
+    pub common: CommonMetadata,
     #[serde(flatten)]
     pub extensions: AssetExtensionProperties,
     #[serde(flatten)]
