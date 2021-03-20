@@ -10,5 +10,5 @@ pub struct Link {
     pub type_: Option<String>,
     pub title: Option<String>,
     #[serde(flatten)]
-    pub other: Value,
+    pub extra_fields: Value,
 }
