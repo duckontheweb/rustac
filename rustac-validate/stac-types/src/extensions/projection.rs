@@ -7,7 +7,7 @@ pub struct ProjectionCollectionProperties {}
 #[derive(Serialize, Deserialize)]
 pub struct ProjectionItemProperties {
     #[serde(rename = "proj:epsg")]
-    pub epsg: Option<u16>,
+    pub epsg: Option<u32>,
     #[serde(rename = "proj:wkt2")]
     pub wkt2: Option<String>,
     #[serde(rename = "proj:projjson")]
