@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use geojson::Bbox;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -10,12 +11,12 @@ use crate::extensions::CollectionExtensionProperties;
 
 #[derive(Serialize, Deserialize)]
 pub struct SpatialExtent {
-    bbox: Vec<Vec<f32>>
+    bbox: Vec<Bbox>,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct TemporalExtent {
-    interval: Vec<Vec<Option<String>>>
+    interval: Vec<Vec<Option<String>>>,
 }
 
 #[derive(Serialize, Deserialize)]

@@ -1,3 +1,4 @@
+use geojson::{Geometry, Bbox};
 use serde::{Serialize, Deserialize};
 use serde_json::Value;
 
@@ -13,11 +14,11 @@ pub struct ProjectionItemProperties {
     #[serde(rename = "proj:projjson")]
     pub projjson: Option<Value>,
     #[serde(rename = "proj:geometry")]
-    pub geometry: Option<Value>,
+    pub geometry: Option<Geometry>,
     #[serde(rename = "proj:bbox")]
-    pub bbox: Option<Vec<f32>>,
+    pub bbox: Option<Bbox>,
     #[serde(rename = "proj:centroid")]
-    pub centroid: Option<Vec<f32>>,
+    pub centroid: Option<Geometry>,
     #[serde(rename = "proj:shape")]
     pub shape: Option<Vec<i32>>,
     #[serde(rename = "proj:transform")]
