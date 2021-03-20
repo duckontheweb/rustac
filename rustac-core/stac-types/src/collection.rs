@@ -43,7 +43,7 @@ pub struct Collection {
     #[serde(flatten)]
     pub extensions: CollectionExtensionProperties,
     #[serde(flatten)]
-    pub other: Value,
+    pub extra_fields: Value,
 }
 
 #[cfg(test)]

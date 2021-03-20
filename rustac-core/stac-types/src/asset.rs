@@ -14,5 +14,5 @@ pub struct Asset {
     #[serde(flatten)]
     pub extensions: AssetExtensionProperties,
     #[serde(flatten)]
-    pub other: Value,
+    pub extra_fields: Value,
 }
