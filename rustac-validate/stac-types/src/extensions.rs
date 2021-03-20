@@ -5,7 +5,6 @@ use eo::{EoItemProperties, EoAssetProperties, EoCollectionProperties};
 use projection::{ProjectionItemProperties, ProjectionAssetProperties, ProjectionCollectionProperties};
 use scientific::{ScientificItemProperties, ScientificAssetProperties, ScientificCollectionProperties};
 
-// pub mod eo;
 mod projection;
 mod view;
 mod eo;

@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use serde_json;
+use serde_json::Value;
 
 use super::link::Link;
 use super::item::Item;
@@ -13,12 +13,13 @@ pub struct ItemCollection {
     features: Vec<Item>,
     links: Option<Vec<Link>>,
     #[serde(flatten)]
-    pub extra_fields: serde_json::Value,
+    pub extra_fields: Value,
 }
 
 #[cfg(test)]
 mod tests {
     use std::fs;
+    use serde_json;
     use crate::ItemCollection;
 
     fn get_test_example(filename: &str) -> String {

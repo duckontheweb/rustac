@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 use crate::extensions::AssetExtensionProperties;
 
@@ -12,4 +13,6 @@ pub struct Asset {
     pub roles: Option<Vec<String>>,
     #[serde(flatten)]
     pub extensions: AssetExtensionProperties,
+    #[serde(flatten)]
+    pub other: Value,
 }

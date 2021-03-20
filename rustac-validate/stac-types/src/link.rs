@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use serde_json;
+use serde_json::Value;
 
 /// Implementation of a STAC Link.
 #[derive(Serialize, Deserialize)]
@@ -10,5 +10,5 @@ pub struct Link {
     pub type_: Option<String>,
     pub title: Option<String>,
     #[serde(flatten)]
-    pub other: serde_json::Value,
+    pub other: Value,
 }
