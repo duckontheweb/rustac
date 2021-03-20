@@ -7,7 +7,7 @@ use serde_json::Value;
 use super::link::Link;
 use super::asset::Asset;
 use super::provider::Provider;
-use crate::extensions::CollectionExtensionProperties;
+use super::extensions::CollectionExtensionProperties;
 
 #[derive(Serialize, Deserialize)]
 pub struct SpatialExtent {
