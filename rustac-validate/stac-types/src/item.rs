@@ -37,18 +37,6 @@ pub struct Item {
     pub extra_fields: serde_json::Value,
 }
 
-impl Item {
-    /// Serializes the instance to a JSON string
-    pub fn to_json(&self) -> serde_json::Result<String> {
-        Ok(serde_json::to_string(&self)?)
-    }
-
-    /// Creates a new instance from a JSON string
-    pub fn from_json(data: &str) -> serde_json::Result<Self> {
-        Ok(serde_json::from_str(&data)?)
-    }
-}
-
 #[cfg(test)]
 mod test {
     use std::fs;
@@ -62,7 +50,7 @@ mod test {
     #[test]
     fn test_simple_item() {
         let data = get_test_example("simple-item.json");
-        let item = Item::from_json(data.as_str()).unwrap();
+        let item: Item = serde_json::from_str(data.as_str()).unwrap();
 
         assert_eq!(item.id, String::from("20201211_223832_CS2"));
     }
@@ -70,7 +58,7 @@ mod test {
     #[test]
     fn test_extended_item() {
         let data = get_test_example("extended-item.json");
-        let item = Item::from_json(data.as_str()).unwrap();
+        let item: Item = serde_json::from_str(data.as_str()).unwrap();
 
         assert_eq!(item.properties.common.platform, Some(String::from("cool_sat2")));
         assert_eq!(item.properties.extension.view.sun_elevation, Some(54.9));
@@ -81,7 +69,7 @@ mod test {
     #[test]
     fn test_core_item() {
         let data = get_test_example("core-item.json");
-        let item = Item::from_json(data.as_str()).unwrap();
+        let item: Item = serde_json::from_str(data.as_str()).unwrap();
         
         assert_eq!(item.properties.common.constellation, Some(String::from("ion")));
     }
@@ -89,7 +77,7 @@ mod test {
     #[test]
     fn test_scientific_extension_item() {
         let data = get_test_example("extensions/scientific/item.json");
-        let item = Item::from_json(data.as_str()).unwrap();
+        let item: Item = serde_json::from_str(data.as_str()).unwrap();
 
         assert_eq!(item.links[2].rel, String::from("cite-as"));
     }

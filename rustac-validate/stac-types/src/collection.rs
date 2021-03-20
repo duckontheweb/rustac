@@ -46,18 +46,6 @@ pub struct Collection {
     pub other: serde_json::Value,
 }
 
-impl Collection {
-    /// Serializes the instance to a JSON string
-    pub fn to_json(&self) -> serde_json::Result<String> {
-        Ok(serde_json::to_string(&self)?)
-    }
-
-    /// Creates a new instance from a JSON string
-    pub fn from_json(data: &str) -> serde_json::Result<Self> {
-        Ok(serde_json::from_str(&data)?)
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use std::fs;
@@ -71,7 +59,7 @@ mod tests {
     #[test]
     fn test_collection_example() {
         let data = get_test_example("collection.json");
-        let collection = Collection::from_json(data.as_str()).unwrap();
+        let collection: Collection = serde_json::from_str(data.as_str()).unwrap();
 
         assert_eq!(collection.id, String::from("simple-collection"));
     }
@@ -79,7 +67,7 @@ mod tests {
     #[test]
     fn test_sentinel_2_collection_example() {
         let data = get_test_example("sentinel-2-collection.json");
-        let collection = Collection::from_json(data.as_str()).unwrap();
+        let collection: Collection = serde_json::from_str(data.as_str()).unwrap();
 
         assert_eq!(collection.id, String::from("sentinel-2"))
     }
@@ -87,7 +75,7 @@ mod tests {
     #[test]
     fn test_scientific_extension_collection() {
         let data = get_test_example("extensions/scientific/collection.json");
-        let collection = Collection::from_json(data.as_str()).unwrap();
+        let collection: Collection = serde_json::from_str(data.as_str()).unwrap();
 
         assert_eq!(
             collection.extensions.sci.citation, 

@@ -19,18 +19,6 @@ pub struct Catalog {
     pub extra_fields: serde_json::Value,
 }
 
-impl Catalog {
-    /// Serializes the instance to a JSON string
-    pub fn to_json(&self) -> serde_json::Result<String> {
-        Ok(serde_json::to_string(&self)?)
-    }
-
-    /// Creates a new instance from a JSON string
-    pub fn from_json(data: &str) -> serde_json::Result<Self> {
-        Ok(serde_json::from_str(&data)?)
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use std::fs;
@@ -44,7 +32,7 @@ mod tests {
     #[test]
     fn test_catalog_example() {
         let data = get_test_example("catalog.json");
-        let collection = Catalog::from_json(data.as_str()).unwrap();
+        let collection: Catalog = serde_json::from_str(data.as_str()).unwrap();
 
         assert_eq!(collection.id, String::from("examples"));
     }
