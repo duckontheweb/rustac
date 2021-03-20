@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use geojson::{Geometry, Bbox};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -27,8 +28,8 @@ pub struct Item {
     pub id: String,
     #[serde(rename = "type")]
     pub type_: String,
-    pub geometry: Value,
-    pub bbox: Vec<f32>,
+    pub geometry: Geometry,
+    pub bbox: Bbox,
     pub properties: ItemProperties,
     pub links: Vec<Link>,
     pub assets: HashMap<String, Asset>,
