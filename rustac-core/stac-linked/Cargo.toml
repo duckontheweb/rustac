@@ -1,0 +1,10 @@
+[package]
+name = "stac-linked"
+version = "0.1.0"
+authors = ["Jon Duckworth <duckontheweb@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+stac-types = { path = "../stac-types" }
