@@ -10,3 +10,8 @@ edition = "2018"
 geojson = { version = "0.22", features = ["geo-types"]}
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+jsonschema = { version = "0.6", features = ["reqwest"], optional = true }
+reqwest = { version = "0.11", features = ["json", "blocking"], optional = true }
+
+[features]
+validate = ["jsonschema", "reqwest"]

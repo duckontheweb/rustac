@@ -33,6 +33,7 @@ pub struct Item {
     pub properties: ItemProperties,
     pub links: Vec<Link>,
     pub assets: HashMap<String, Asset>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub collection: Option<String>,
     #[serde(flatten)]
     pub other: Value,
