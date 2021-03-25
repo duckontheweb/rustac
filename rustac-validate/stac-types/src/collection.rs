@@ -30,16 +30,22 @@ pub struct Collection {
     stac_version: String,
     #[serde(rename = "type")]
     type_: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     stac_extensions: Option<Vec<String>>,
     id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
     description: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     keywords: Option<Vec<String>>,
     license: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     providers: Option<Vec<Provider>>,
     extent: Extent,
+    #[serde(skip_serializing_if = "Option::is_none")]
     summaries: Option<HashMap<String, Value>>,
     links: Vec<Link>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     assets: Option<HashMap<String, Asset>>,
     #[serde(flatten)]
     pub extensions: CollectionExtensionProperties,

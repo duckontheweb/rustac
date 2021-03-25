@@ -9,11 +9,15 @@ pub struct Catalog {
     stac_version: String,
     #[serde(rename = "type")]
     type_: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     stac_extensions: Option<Vec<String>>,
     id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
     description: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     summaries: Option<HashMap<String, Value>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     links: Option<Vec<Link>>,
     #[serde(flatten)]
     pub extra_fields: Value,
