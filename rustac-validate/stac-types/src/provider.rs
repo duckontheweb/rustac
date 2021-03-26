@@ -20,3 +20,24 @@ pub struct Provider {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>
 }
+
+/// Allowed `"roles"` values for a [`Provider`] object.
+#[derive(Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ProviderRoles {
+    /// Maps to the `"licensor"` value
+    #[serde(rename = "licensor")]
+    Licensor,
+
+    /// Maps to the `"producer"` value
+    #[serde(rename = "producer")]
+    Producer,
+
+    /// Maps to the `"processor"` value
+    #[serde(rename = "processor")]
+    Processor,
+
+    /// Maps to the `"host"` value
+    #[serde(rename = "host")]
+    Host,
+}
