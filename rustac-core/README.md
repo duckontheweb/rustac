@@ -1,6 +1,6 @@
 # RuSTAC
 
-Rust(y) tools for working with the [SpatioTemporal Asset Catalog (STAC) spec](https://stacspec.org/)
+Rust(y) tools for working with the [SpatioTemporal Asset Catalog (STAC) spec](https://stacspec.org/).
 
 ## Caveat
 
