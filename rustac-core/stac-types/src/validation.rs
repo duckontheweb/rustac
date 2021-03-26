@@ -65,9 +65,7 @@ mod tests {
         assert_eq!(result, true);
     }
 
-    // Need to ignore this until https://github.com/Stranger6667/jsonschema-rs/issues/180 is resolved
     #[test]
-    #[ignore]
     fn test_valid_collection() {
         let data = get_test_example("collection.json");
         let collection: Collection = serde_json::from_str(data.as_str()).unwrap();
