@@ -1,24 +1,44 @@
+//! Implementation of the [STAC Catalog spec](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/catalog-spec/catalog-spec.md)
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 use super::link::Link;
 
+/// Represents a [STAC Catalog](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/catalog-spec/catalog-spec.md).
 #[derive(Serialize, Deserialize)]
 pub struct Catalog {
-    stac_version: String,
+    /// The STAC version the Catalog implements.
+    pub stac_version: String,
+
+    /// Set to Catalog if this Catalog only implements the Catalog spec.
+    /// **This maps to the STAC `"type"` attribute, which is a reserved keyword.**
     #[serde(rename = "type")]
-    type_: String,
+    pub type_: String,
+
+    /// A list of extension identifiers the Catalog implements.
     #[serde(skip_serializing_if = "Option::is_none")]
-    stac_extensions: Option<Vec<String>>,
-    id: String,
+    pub stac_extensions: Option<Vec<String>>,
+
+    /// Identifier for the Catalog.
+    pub id: String,
+
+    /// A short descriptive one-line title for the Catalog.
     #[serde(skip_serializing_if = "Option::is_none")]
-    title: Option<String>,
-    description: String,
+    pub title: Option<String>,
+
+    /// Detailed multi-line description to fully explain the Catalog. 
+    pub description: String,
+
+    /// A map of property summaries, either a set of values or statistics such as a range.
     #[serde(skip_serializing_if = "Option::is_none")]
-    summaries: Option<HashMap<String, Value>>,
+    pub summaries: Option<HashMap<String, Value>>,
+
+    /// A list of references to other documents.
     #[serde(skip_serializing_if = "Option::is_none")]
-    links: Option<Vec<Link>>,
+    pub links: Option<Vec<Link>>,
+
+    /// Additional fields not covered by the STAC spec.
     #[serde(flatten)]
     pub extra_fields: Value,
 }

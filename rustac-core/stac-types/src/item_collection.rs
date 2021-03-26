@@ -1,17 +1,32 @@
+//! Implementation of a [STAC Item 
+//! Collection](https://github.com/radiantearth/stac-api-spec/tree/v1.0.0-beta.1/fragments/itemcollection) 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 use super::link::Link;
 use super::item::Item;
 
+/// Implements the [STAC Item Collection 
+/// spec](https://github.com/radiantearth/stac-api-spec/tree/v1.0.0-beta.1/fragments/itemcollection)
 #[derive(Serialize, Deserialize)]
 pub struct ItemCollection {
-    stac_version: String,
-    stac_extensions: Vec<String>,
+    /// The STAC version the ItemCollection implements.
+    pub stac_version: String,
+
+    /// A list of extensions the ItemCollection implements.
+    pub stac_extensions: Vec<String>,
+
+    ///  Always "FeatureCollection" to provide compatibility with GeoJSON.
     #[serde(rename = "type")]
-    type_: String,
-    features: Vec<Item>,
-    links: Option<Vec<Link>>,
+    pub type_: String,
+
+    /// A possibly-empty array of Items.
+    pub features: Vec<Item>,
+
+    /// An array of Links related to this ItemCollection.
+    pub links: Option<Vec<Link>>,
+
+    /// Additional fields not covered by the STAC spec.
     #[serde(flatten)]
     pub extra_fields: Value,
 }
