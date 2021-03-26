@@ -1,3 +1,4 @@
+//! Tools for validating STAC Objects using JSON Schema. *Requires the `"validate"` feature.*
 use jsonschema::{JSONSchema, Draft};
 use serde::Serialize;
 use serde_json::Value;
@@ -5,6 +6,7 @@ use reqwest::blocking::get;
 
 use crate::error::{Result, StacError};
 
+/// Checks if the given instance is valid. 
 pub fn is_valid<T>(instance: &T, schema_uri: &str) -> Result<bool> 
 where
     T: Serialize
@@ -17,6 +19,7 @@ where
     
 }
 
+/// Checks if the the given instance is valid and returns the validation errors if not.
 pub fn validate<T>(instance: &T, schema_uri: &str) -> Result<()>
 where
     T: Serialize
