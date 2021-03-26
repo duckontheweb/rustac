@@ -1,6 +1,5 @@
 [workspace]
 
 members = [
-    "stac-types",
-    "stac-reader"
+    "stac-types"
 ]
