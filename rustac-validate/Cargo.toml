@@ -2,5 +2,5 @@
 
 members = [
     "stac-types",
-    "stac-linked"
+    "stac-reader"
 ]
