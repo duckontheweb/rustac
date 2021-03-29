@@ -18,9 +18,7 @@
 extern crate serde;
 extern crate serde_json;
 extern crate geojson;
-#[cfg(feature = "validate")]
-extern crate reqwest;
-#[cfg(features = "jsonschema")]
+extern crate semver;
 
 pub use link::Link;
 pub use item::Item;
@@ -40,6 +38,4 @@ pub mod provider;
 pub mod common_metadata;
 mod extensions;
 
-#[cfg(feature = "validate")]
-pub mod validation;
 pub mod error;

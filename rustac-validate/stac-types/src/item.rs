@@ -4,6 +4,7 @@ use std::collections::HashMap;
 use geojson::{Geometry, Bbox};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use semver::Version;
 
 use super::link::Link;
 use super::asset::Asset;
@@ -14,7 +15,7 @@ use super::extensions::ItemExtensionProperties;
 #[derive(Serialize, Deserialize)]
 pub struct Item {
     /// The STAC version the Item implements.
-    pub stac_version: String,
+    pub stac_version: Version,
 
     /// A list of extensions the Item implements.
     pub stac_extensions: Vec<String>,

@@ -2,6 +2,7 @@
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use semver::Version;
 
 use super::link::Link;
 
@@ -9,7 +10,7 @@ use super::link::Link;
 #[derive(Serialize, Deserialize)]
 pub struct Catalog {
     /// The STAC version the Catalog implements.
-    pub stac_version: String,
+    pub stac_version: Version,
 
     /// Set to Catalog if this Catalog only implements the Catalog spec.
     /// **This maps to the STAC `"type"` attribute, which is a reserved keyword.**

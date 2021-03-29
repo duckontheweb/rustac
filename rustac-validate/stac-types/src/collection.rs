@@ -4,6 +4,7 @@ use std::collections::HashMap;
 use geojson::Bbox;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use semver::Version;
 
 use super::link::Link;
 use super::asset::Asset;
@@ -14,7 +15,7 @@ use super::extensions::CollectionExtensionProperties;
 #[derive(Serialize, Deserialize)]
 pub struct Collection {
     /// The STAC version the Collection implements.
-    pub stac_version: String,
+    pub stac_version: Version,
     
     /// Must be set to `"Collection"` to be a valid Collection.
     /// **This maps to the STAC `"type"` attribute, which is a reserved keyword.**
