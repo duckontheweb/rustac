@@ -3,15 +3,13 @@ use serde::Serialize;
 use serde_json::Value;
 
 use crate::error::{Result, StacValidateError};
-use crate::{STACMeta, get_schema, SchemaType};
+use crate::{SchemaType, Validate};
 
 /// Checks if the given instance is valid. 
-pub fn is_valid<T>(instance: &T, schema_type: SchemaType) -> Result<bool> 
+pub fn is_valid<T>(schema: Value) -> Result<bool>
 where
-    T: Serialize + STACMeta
+    T: Serialize + Validate
 {
-
-    let schema = get_schema(instance, schema_type)?;
     Ok(JSONSchema::options()
         .with_draft(Draft::Draft7)
         .compile(&schema)?
@@ -20,9 +18,9 @@ where
 }
 
 /// Checks if the the given instance is valid and returns the validation errors if not.
-pub fn validate_from_uri<T>(instance: &T, schema_type: SchemaType) -> Result<()>
+pub fn validate<T>(instance: &T, schema_type: SchemaType) -> Result<()>
 where
-    T: Serialize + STACMeta
+    T: Serialize + Validate
 {
     let schema: Value = get_schema(instance, schema_type)?;
     let value = serde_json::to_value(instance)?;
@@ -59,7 +57,7 @@ mod tests {
 
     #[test]
     fn test_valid_item() {
-        impl STACMeta for Item {
+        impl Validate for Item {
             fn get_type(&self) -> STACType { STACType::Item }
             fn get_stac_version(&self) -> Version { self.stac_version.clone() }
         }
@@ -77,7 +75,7 @@ mod tests {
 
     #[test]
     fn test_valid_collection() {
-        impl STACMeta for Collection {
+        impl Validate for Collection {
             fn get_type(&self) -> STACType { STACType::Collection }
             fn get_stac_version(&self) -> Version { self.stac_version.clone() }
         }
@@ -100,7 +98,7 @@ mod tests {
 
     #[test]
     fn test_valid_catalog() {
-        impl STACMeta for Catalog {
+        impl Validate for Catalog {
             fn get_type(&self) -> STACType { STACType::Catalog }
             fn get_stac_version(&self) -> Version { self.stac_version.clone() }
         }
