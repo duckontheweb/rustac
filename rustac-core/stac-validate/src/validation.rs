@@ -6,7 +6,7 @@ use crate::error::{Result, StacValidateError};
 use crate::{SchemaType, Validate};
 
 /// Checks if the given instance is valid. 
-pub fn is_valid<T>(schema: Value) -> Result<bool>
+pub fn is_valid<T>(instance: &T, schema: Value) -> Result<bool>
 where
     T: Serialize + Validate
 {
@@ -47,7 +47,7 @@ mod tests {
     use semver::Version;
     use stac_types::{Item, Collection, Catalog};
 
-    use crate::{STACType, SchemaType};
+    use crate::SchemaType;
     use super::*;
 
     fn get_test_example(filename: &str) -> String {
@@ -58,8 +58,8 @@ mod tests {
     #[test]
     fn test_valid_item() {
         impl Validate for Item {
-            fn get_type(&self) -> STACType { STACType::Item }
-            fn get_stac_version(&self) -> Version { self.stac_version.clone() }
+            fn get_type(&self) -> &String { &self.type_ }
+            fn get_stac_version(&self) -> &Version { &self.stac_version }
         }
         let data = get_test_example("core-item.json");
         let item: Item = serde_json::from_str(data.as_str()).unwrap();

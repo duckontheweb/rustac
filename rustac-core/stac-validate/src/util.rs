@@ -1,6 +1,6 @@
 use semver::{VersionReq, Version};
 
-use super::types::{SchemaType, STACType};
+use super::types::SchemaType;
 
 pub fn root_url_from_version(version: &Version) -> String
 {
@@ -13,28 +13,29 @@ pub fn root_url_from_version(version: &Version) -> String
     }
 }
 
-pub fn path_from_stac_type(stac_type: &STACType, schema_type: &SchemaType) -> Option<String>
+pub fn path_from_stac_type(stac_type: &str, schema_type: &SchemaType) -> Option<String>
 {
     match schema_type {
         SchemaType::Core => match stac_type {
-            STACType::Item => Some(String::from("item-spec/json-schema/item.json")),
-            STACType::Collection => Some(String::from("collection-spec/json-schema/collection.json")),
-            STACType::Catalog => Some(String::from("catalog-spec/json-schema/catalog.json")),
+            "Feature" => Some(String::from("item-spec/json-schema/item.json")),
+            "Collection" => Some(String::from("collection-spec/json-schema/collection.json")),
+            "Catalog" => Some(String::from("catalog-spec/json-schema/catalog.json")),
+            _ => None,
         },
         SchemaType::EOExtension => match stac_type {
-            STACType::Item => Some(String::from("extensions/eo/json-schema/schema.json")),
+            "Feature" => Some(String::from("extensions/eo/json-schema/schema.json")),
             _ => None,
         },
         SchemaType::ProjectionExtension => match stac_type {
-            STACType::Item => Some(String::from("extensions/projection/json-schema/schema.json")),
+            "Feature" => Some(String::from("extensions/projection/json-schema/schema.json")),
             _ => None,
         },
         SchemaType::ScientificExtension => match stac_type {
-            STACType::Item | STACType::Collection => Some(String::from("extensions/scientific/json-schema/schema.json")),
+            "Feature" | "Collection" => Some(String::from("extensions/scientific/json-schema/schema.json")),
             _ => None,
         },
         SchemaType::ViewExtension => match stac_type {
-            STACType::Item => Some(String::from("extensions/view/json-schema/schema.json")),
+            "Feature" => Some(String::from("extensions/view/json-schema/schema.json")),
             _ => None,
         },
     }

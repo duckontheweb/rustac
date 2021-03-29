@@ -5,7 +5,7 @@ use std::result;
 use std::fmt;
 use std::str::FromStr;
 
-/// Alias for [`result::Result`] that uses a [`STACValidateError`]
+/// Alias for [`result::Result`] that uses a [`Error`]
 pub type Result<T> = result::Result<T, Error>;
 
 /// All errors that may be encountered when working with STAC objects in this package

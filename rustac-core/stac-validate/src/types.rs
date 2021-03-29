@@ -1,15 +1,3 @@
-/// Possible STAC object types
-pub enum STACType {
-    /// STAC Catalog
-    Catalog,
-
-    /// STAC Collection
-    Collection,
-
-    /// STAC Item
-    Item,
-}
-
 /// Possible types of schemas
 pub enum SchemaType {
     /// Core JSON schemas
