@@ -17,11 +17,29 @@ use jsonschema::{JSONSchema, Draft};
 
 pub use error::{Result, Error};
 use util::{root_url_from_version, path_from_stac_type};
-pub use types::SchemaType;
 
 mod util;
-mod types;
 pub mod error;
+
+/// Possible types of schemas
+pub enum SchemaType {
+    /// Core JSON schemas
+    Core,
+
+    /// Electro-Optical extension schemas
+    EOExtension,
+
+    /// Projection extension schemas
+    ProjectionExtension,
+
+    /// Scientific Extension schemas
+    ScientificExtension,
+
+    /// View extension schemas
+    ViewExtension,
+}
+
+
 
 /// Adds functionality for getting JSON schemas and validating against them.
 pub trait Validate: Serialize {

@@ -1,6 +1,6 @@
 use semver::{VersionReq, Version};
 
-use super::types::SchemaType;
+use crate::SchemaType;
 
 pub fn root_url_from_version(version: &Version) -> String
 {
