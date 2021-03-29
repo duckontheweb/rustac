@@ -2,6 +2,7 @@
 //! Collection](https://github.com/radiantearth/stac-api-spec/tree/v1.0.0-beta.1/fragments/itemcollection) 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use semver::Version;
 
 use super::link::Link;
 use super::item::Item;
@@ -11,7 +12,7 @@ use super::item::Item;
 #[derive(Serialize, Deserialize)]
 pub struct ItemCollection {
     /// The STAC version the ItemCollection implements.
-    pub stac_version: String,
+    pub stac_version: Version,
 
     /// A list of extensions the ItemCollection implements.
     pub stac_extensions: Vec<String>,
