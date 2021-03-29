@@ -12,7 +12,7 @@
 //! 
 //! The following [Cargo features](https://doc.rust-lang.org/cargo/reference/features.html) are available
 //! 
-//! * `validate`: Enables validation of STAC objects using [`jsonschema`].
+//! * `validate`: Enables validation of STAC objects using [`jsonschema`](https://docs.rs/jsonschema).
 //! 
 
 extern crate serde;
