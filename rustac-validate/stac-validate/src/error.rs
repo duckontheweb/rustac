@@ -5,12 +5,12 @@ use std::result;
 use std::fmt;
 use std::str::FromStr;
 
-/// Alias for [`result::Result`] that uses a [`Error`]
-pub type Result<T> = result::Result<T, Error>;
+/// Alias for [`result::Result`] that uses a [`STACValidateError`]
+pub type STACValidateResult<T> = result::Result<T, STACValidateError>;
 
 /// All errors that may be encountered when working with STAC objects in this package
 #[derive(Debug)]
-pub enum Error {
+pub enum STACValidateError {
     /// Errors resulting from failed HTTP requests in the [`reqwest`] package
     HTTP(reqwest::Error),
 
@@ -20,50 +20,60 @@ pub enum Error {
     /// Errors resulting from failed JSON Schema compilation in the [`jsonschema`] package
     Compilation(jsonschema::CompilationError),
 
-    /// Errors resulting from failed serialization/deserialization of types using the [`serde_json`] pacage
+    /// Errors resulting from failed serialization/deserialization of types using the [`serde_json`] package
     JSONParse(serde_json::Error),
+
+    /// Errors resulting from trying to parse a semantic version string with [`semver`]
+    SemVer(semver::SemVerError),
 
     /// Other errors not covered by the variants above.
     Other(String),
 }
 
-impl error::Error for Error {}
+impl error::Error for STACValidateError {}
 
-impl fmt::Display for Error {
+impl fmt::Display for STACValidateError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match &self {
-            Error::HTTP(source) => source.fmt(f),
-            Error::Validation(message) | Error::Other(message) => {
+            STACValidateError::HTTP(source) => source.fmt(f),
+            STACValidateError::Validation(message) | STACValidateError::Other(message) => {
                 write!(f, "{}", message.as_str())
             },
-            Error::JSONParse(source) => source.fmt(f),
-            Error::Compilation(source) => source.fmt(f),
+            STACValidateError::JSONParse(source) => source.fmt(f),
+            STACValidateError::Compilation(source) => source.fmt(f),
+            STACValidateError::SemVer(source) => source.fmt(f),
         }
     }
 }
 
-impl From<reqwest::Error> for Error {
-    fn from (err: reqwest::Error) -> Error {
-        Error::HTTP(err)
+impl From<reqwest::Error> for STACValidateError {
+    fn from (err: reqwest::Error) -> STACValidateError {
+        STACValidateError::HTTP(err)
     }
 }
 
-impl From<serde_json::Error> for Error {
-    fn from(err: serde_json::Error) -> Error {
-        Error::JSONParse(err)
+impl From<serde_json::Error> for STACValidateError {
+    fn from(err: serde_json::Error) -> STACValidateError {
+        STACValidateError::JSONParse(err)
     }
 }
 
-impl FromStr for Error {
+impl FromStr for STACValidateError {
     type Err = Self;
 
-    fn from_str(s: &str) -> Result<Self> {
-        Ok(Error::Other(String::from(s)))
+    fn from_str(s: &str) -> STACValidateResult<Self> {
+        Ok(STACValidateError::Other(String::from(s)))
     }
 }
 
-impl From<jsonschema::CompilationError> for Error {
-    fn from (err: jsonschema::CompilationError) -> Error {
-        Error::Compilation(err)
+impl From<jsonschema::CompilationError> for STACValidateError {
+    fn from (err: jsonschema::CompilationError) -> STACValidateError {
+        STACValidateError::Compilation(err)
+    }
+}
+
+impl From<semver::SemVerError> for STACValidateError {
+    fn from(err: semver::SemVerError) -> STACValidateError {
+        STACValidateError::SemVer(err)
     }
 }
