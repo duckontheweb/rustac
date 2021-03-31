@@ -6,10 +6,10 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use semver::Version;
 
-use super::link::Link;
-use super::asset::Asset;
-use super::common_metadata::CommonMetadata;
-use super::extensions::ItemExtensionProperties;
+use super::fragments::Link;
+use super::fragments::Asset;
+use super::fragments::CommonMetadata;
+use crate::extensions::ItemExtensionProperties;
 
 /// Represents a [STAC Item](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md).
 #[derive(Serialize, Deserialize)]

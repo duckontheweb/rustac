@@ -6,10 +6,10 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use semver::Version;
 
-use super::link::Link;
-use super::asset::Asset;
-use super::provider::Provider;
-use super::extensions::CollectionExtensionProperties;
+use crate::types::fragments::Link;
+use crate::types::fragments::Asset;
+use crate::types::fragments::Provider;
+use crate::extensions::CollectionExtensionProperties;
 
 /// Implements the [STAC Collection spec](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md).
 #[derive(Serialize, Deserialize)]
