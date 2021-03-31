@@ -1,4 +1,5 @@
 use serde::Serialize;
+use std::thread;
 
 use crate::error::{STACValidateResult, STACValidateError};
 use crate::get_schema;
@@ -39,11 +40,11 @@ pub fn is_valid<T: Serialize>(instance: &T) -> STACValidateResult<bool> {
 
     for schema_type in schema_types {
         if !is_valid_for_schema_type(&instance, schema_type)? {
-            return Ok(true)
+            return Ok(false)
         }
     }
 
-    Ok(false)
+    Ok(true)
 }
 
 /// Checks if the given instance is valid for the given schema type.
@@ -109,12 +110,7 @@ mod tests {
         let data = get_test_example("core-item.json");
         let item: Item = serde_json::from_str(data.as_str()).unwrap();
 
-        let result = is_valid_for_schema_type(
-            &item,
-            "core"
-        )
-            .unwrap();
-
-        assert_eq!(result, true);
+        assert!(is_valid_for_schema_type(&item, "core").unwrap());
+        assert!(is_valid(&item).unwrap());
     }
 }
