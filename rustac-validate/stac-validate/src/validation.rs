@@ -1,8 +1,50 @@
-use jsonschema::is_valid;
-use serde_json::{self, Value};
+use serde::Serialize;
 
-use crate::error::STACValidateResult;
+use crate::error::{STACValidateResult, STACValidateError};
 use crate::get_schema;
+
+/// Checks if the given instance is valid for all schema types associated with it. This will always
+/// check against the "core" schema for this object and will additionally check against schemas
+/// for any extensions that the object implements.
+///
+/// # Arguments
+///
+/// * `instance` - A serializable struct that has `stac_version` and `type` fields.
+///
+/// # Errors
+///
+/// In addition to any errors resulting from calls to the [`is_valid_for_schema_type`] function,
+/// this function will return [`STACValidateError::Other`] if the `stac_extensions` field is not
+/// an array or does not contains strings.
+///
+pub fn is_valid<T: Serialize>(instance: &T) -> STACValidateResult<bool> {
+    let instance = serde_json::to_value(instance)?;
+    let mut schema_types = Vec::new();
+
+    // Always test against the core spec
+    schema_types.push("core");
+
+    let stac_extensions = instance.get("stac_extensions");
+    if let Some(stac_extensions) = stac_extensions {
+        let stac_extensions = stac_extensions
+            .as_array()
+            .ok_or_else(|| STACValidateError::Other(String::from("Invalid stac_extensions field")))?;
+        for stac_extension in stac_extensions {
+            let stac_extension = stac_extension
+                .as_str()
+                .ok_or_else(|| STACValidateError::Other(String::from("Invalid stac_extension value")))?;
+            schema_types.push(stac_extension);
+        }
+    };
+
+    for schema_type in schema_types {
+        if !is_valid_for_schema_type(&instance, schema_type)? {
+            return Ok(true)
+        }
+    }
+
+    Ok(false)
+}
 
 /// Checks if the given instance is valid for the given schema type.
 ///
@@ -20,12 +62,12 @@ use crate::get_schema;
 ///    `"type"`) or if no schema URL can be found for this instance and schema type.
 /// * [`STACValidateError::JSONParse`] if there is a problem parsing the schema from the JSON string.
 ///
-/// [`STACValidateError::Other`]: crate::error::STACValidateError::Other
-/// [`STACValidateError::JSONParse`]: crate::error::STACValidateError::JSONParse
-pub fn is_valid_for_schema_type(instance: &Value, schema_type: &str) -> STACValidateResult<bool>
+/// [`Value`]: serde_json::Value
+pub fn is_valid_for_schema_type<T: Serialize>(instance: &T, schema_type: &str) -> STACValidateResult<bool>
 {
-    let schema = get_schema(instance, schema_type)?;
-    Ok(is_valid(&schema, instance))
+    let instance = serde_json::to_value(instance)?;
+    let schema = get_schema(&instance, schema_type)?;
+    Ok(jsonschema::is_valid(&schema, &instance))
 }
 
 // /// Checks if the the given instance is valid and returns the validation errors if not.
@@ -49,82 +91,30 @@ pub fn is_valid_for_schema_type(instance: &Value, schema_type: &str) -> STACVali
 //     }
 // }
 
-// #[cfg(test)]
-// mod tests {
-//     use std::fs;
-//     use serde_json;
-//     use semver::Version;
-//     use stac_types::{Item, Collection, Catalog};
-//
-//     use crate::SchemaType;
-//     use super::*;
-//
-//     fn get_test_example(filename: &str) -> String {
-//         let path = format!("./tests-data/{}", filename);
-//         fs::read_to_string(path).unwrap()
-//     }
-//
-//     #[test]
-//     fn test_valid_item() {
-//         impl Validate for Item {
-//             fn get_type(&self) -> &String { &self.type_ }
-//             fn get_stac_version(&self) -> &Version { &self.stac_version }
-//         }
-//         let data = get_test_example("core-item.json");
-//         let item: Item = serde_json::from_str(data.as_str()).unwrap();
-//
-//         let result = is_valid(
-//             &item,
-//             SchemaType::Core
-//         )
-//             .unwrap();
-//
-//         assert_eq!(result, true);
-//     }
-//
-//     #[test]
-//     fn test_valid_collection() {
-//         impl Validate for Collection {
-//             fn get_type(&self) -> STACType { STACType::Collection }
-//             fn get_stac_version(&self) -> Version { self.stac_version.clone() }
-//         }
-//
-//         let data = get_test_example("collection.json");
-//         let collection: Collection = serde_json::from_str(data.as_str()).unwrap();
-//
-//         let result = is_valid(
-//             &collection,
-//             SchemaType::Core
-//         )
-//             .unwrap();
-//
-//         if !result {
-//             let collection: Collection = serde_json::from_str(data.as_str()).unwrap();
-//             println!("{:#?}", serde_json::to_value(collection).unwrap());
-//         }
-//         assert_eq!(result, true);
-//     }
-//
-//     #[test]
-//     fn test_valid_catalog() {
-//         impl Validate for Catalog {
-//             fn get_type(&self) -> STACType { STACType::Catalog }
-//             fn get_stac_version(&self) -> Version { self.stac_version.clone() }
-//         }
-//
-//         let data = get_test_example("catalog.json");
-//         let catalog: Catalog = serde_json::from_str(data.as_str()).unwrap();
-//
-//         let result = is_valid(
-//             &catalog,
-//             SchemaType::Core
-//         )
-//             .unwrap();
-//
-//         if !result {
-//             let catalog: Catalog = serde_json::from_str(data.as_str()).unwrap();
-//             println!("{:#?}", serde_json::to_value(catalog).unwrap());
-//         }
-//         assert_eq!(result, true);
-//     }
-// }
+#[cfg(test)]
+mod tests {
+    use std::fs;
+    use serde_json;
+    use stac_types::Item;
+
+    use super::*;
+
+    fn get_test_example(filename: &str) -> String {
+        let path = format!("./tests-data/{}", filename);
+        fs::read_to_string(path).unwrap()
+    }
+
+    #[test]
+    fn test_valid_item() {
+        let data = get_test_example("core-item.json");
+        let item: Item = serde_json::from_str(data.as_str()).unwrap();
+
+        let result = is_valid_for_schema_type(
+            &item,
+            "core"
+        )
+            .unwrap();
+
+        assert_eq!(result, true);
+    }
+}
