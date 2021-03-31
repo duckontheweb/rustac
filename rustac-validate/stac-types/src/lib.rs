@@ -20,22 +20,19 @@ extern crate serde_json;
 extern crate geojson;
 extern crate semver;
 
-pub use link::Link;
-pub use item::Item;
-pub use asset::Asset;
-pub use collection::{Collection, Extent, SpatialExtent, TemporalExtent};
-pub use provider::Provider;
-pub use catalog::Catalog;
-pub use item_collection::ItemCollection;
+#[cfg(feature = "validate")]
+extern crate jsonschema;
 
-pub mod link;
-pub mod item;
-pub mod asset;
-pub mod collection;
-pub mod catalog;
-pub mod item_collection;
-pub mod provider;
-pub mod common_metadata;
+pub use types::{
+    item::Item,
+    catalog::Catalog,
+    collection::{Collection, Extent, SpatialExtent, TemporalExtent},
+    item_collection::ItemCollection,
+    fragments::{Link, Asset, Provider}
+};
+
+mod types;
 mod extensions;
-
 pub mod error;
+#[cfg(feature = "validate")]
+pub mod validation;

@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use semver::Version;
 
-use super::link::Link;
+use super::fragments::Link;
 
 /// Represents a [STAC Catalog](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/catalog-spec/catalog-spec.md).
 #[derive(Serialize, Deserialize)]

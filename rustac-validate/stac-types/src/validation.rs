@@ -1,4 +1,6 @@
-//! Tools for validating STAC Objects using JSON Schema. *Requires the `"validate"` feature.*
-mod validate;
+//! Tools for validating STAC objects
+pub use util::{get_schema, get_schema_url};
+pub use validate::{is_valid, is_valid_for_schema_type};
 
-pub use validate::{is_valid, validate_from_uri};
+mod util;
+mod validate;

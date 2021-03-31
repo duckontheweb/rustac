@@ -4,8 +4,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use semver::Version;
 
-use super::link::Link;
-use super::item::Item;
+use crate::types::fragments::Link;
+use crate::types::item::Item;
 
 /// Implements the [STAC Item Collection 
 /// spec](https://github.com/radiantearth/stac-api-spec/tree/v1.0.0-beta.1/fragments/itemcollection)

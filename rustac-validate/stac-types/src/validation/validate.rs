@@ -1,8 +1,7 @@
 use serde::Serialize;
-use std::thread;
 
-use crate::error::{STACValidateResult, STACValidateError};
-use crate::get_schema;
+use crate::error::{STACResult, STACError};
+use super::get_schema;
 
 /// Checks if the given instance is valid for all schema types associated with it. This will always
 /// check against the "core" schema for this object and will additionally check against schemas
@@ -15,10 +14,10 @@ use crate::get_schema;
 /// # Errors
 ///
 /// In addition to any errors resulting from calls to the [`is_valid_for_schema_type`] function,
-/// this function will return [`STACValidateError::Other`] if the `stac_extensions` field is not
+/// this function will return [`STACError::Other`] if the `stac_extensions` field is not
 /// an array or does not contains strings.
 ///
-pub fn is_valid<T: Serialize>(instance: &T) -> STACValidateResult<bool> {
+pub fn is_valid<T: Serialize>(instance: &T) -> STACResult<bool> {
     let instance = serde_json::to_value(instance)?;
     let mut schema_types = Vec::new();
 
@@ -29,11 +28,11 @@ pub fn is_valid<T: Serialize>(instance: &T) -> STACValidateResult<bool> {
     if let Some(stac_extensions) = stac_extensions {
         let stac_extensions = stac_extensions
             .as_array()
-            .ok_or_else(|| STACValidateError::Other(String::from("Invalid stac_extensions field")))?;
+            .ok_or_else(|| STACError::Other(String::from("Invalid stac_extensions field")))?;
         for stac_extension in stac_extensions {
             let stac_extension = stac_extension
                 .as_str()
-                .ok_or_else(|| STACValidateError::Other(String::from("Invalid stac_extension value")))?;
+                .ok_or_else(|| STACError::Other(String::from("Invalid stac_extension value")))?;
             schema_types.push(stac_extension);
         }
     };
@@ -59,12 +58,12 @@ pub fn is_valid<T: Serialize>(instance: &T) -> STACValidateResult<bool> {
 ///
 /// This function may return the following errors:
 ///
-/// * [`STACValidateError::Other`] if instance does not contain the required fields (`"stac_version"` and
+/// * [`STACError::Other`] if instance does not contain the required fields (`"stac_version"` and
 ///    `"type"`) or if no schema URL can be found for this instance and schema type.
-/// * [`STACValidateError::JSONParse`] if there is a problem parsing the schema from the JSON string.
+/// * [`STACError::JSONParse`] if there is a problem parsing the schema from the JSON string.
 ///
 /// [`Value`]: serde_json::Value
-pub fn is_valid_for_schema_type<T: Serialize>(instance: &T, schema_type: &str) -> STACValidateResult<bool>
+pub fn is_valid_for_schema_type<T: Serialize>(instance: &T, schema_type: &str) -> STACResult<bool>
 {
     let instance = serde_json::to_value(instance)?;
     let schema = get_schema(&instance, schema_type)?;
@@ -96,7 +95,7 @@ pub fn is_valid_for_schema_type<T: Serialize>(instance: &T, schema_type: &str) -
 mod tests {
     use std::fs;
     use serde_json;
-    use stac_types::Item;
+    use crate::Item;
 
     use super::*;
 
