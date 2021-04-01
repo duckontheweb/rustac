@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use semver::Version;
 
-use crate::types::fragments::Link;
+use crate::types::common::Link;
 use crate::types::item::Item;
 
 /// Implements the [STAC Item Collection 
@@ -15,7 +15,8 @@ pub struct ItemCollection {
     pub stac_version: Version,
 
     /// A list of extensions the ItemCollection implements.
-    pub stac_extensions: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub stac_extensions: Option<Vec<String>>,
 
     ///  Always "FeatureCollection" to provide compatibility with GeoJSON.
     #[serde(rename = "type")]

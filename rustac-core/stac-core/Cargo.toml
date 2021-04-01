@@ -1,5 +1,5 @@
 [package]
-name = "stac-types"
+name = "stac-core"
 version = "0.1.0"
 authors = ["Jon Duckworth <duckontheweb@gmail.com>"]
 edition = "2018"

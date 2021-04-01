@@ -1,4 +1,5 @@
 #![warn(missing_docs)]
+#![deny(clippy::all, clippy::pedantic)]
 //! The `stac-types` crate provides primitive types for working with SpatioTemporal Asset Catalog (STAC)
 //! objects, including:
 //! 
@@ -13,8 +14,7 @@
 //! The following [Cargo features](https://doc.rust-lang.org/cargo/reference/features.html) are available
 //! 
 //! * `validate`: Enables validation of STAC objects using [`jsonschema`](https://docs.rs/jsonschema).
-//! 
-
+//!
 extern crate serde;
 extern crate serde_json;
 extern crate geojson;
@@ -24,11 +24,12 @@ extern crate semver;
 extern crate jsonschema;
 
 pub use types::{
+    STACObject,
     item::Item,
     catalog::Catalog,
     collection::{Collection, Extent, SpatialExtent, TemporalExtent},
     item_collection::ItemCollection,
-    fragments::{Link, Asset, Provider}
+    common::{Link, Asset, Provider}
 };
 
 mod types;
