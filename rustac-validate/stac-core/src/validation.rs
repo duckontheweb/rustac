@@ -19,11 +19,14 @@ pub struct ValidationTarget<'a> {
 }
 
 impl <'a> ValidationTarget<'a> {
+
+    #[must_use]
     /// Gets the internal struct as a serialized [`Value`]
     pub fn serialized_object(&self) -> Value {
         serde_json::to_value(&self.object).unwrap()
     }
 
+    #[must_use]
     /// Gets the STAC spec version associated with this target
     pub fn stac_version(&self) -> &'a Version {
         match self.object {
@@ -33,6 +36,7 @@ impl <'a> ValidationTarget<'a> {
         }
     }
 
+    #[must_use]
     /// Gets the type of this target as a string slice.
     pub fn stac_type(&self) -> &str {
         match self.object {
@@ -42,6 +46,7 @@ impl <'a> ValidationTarget<'a> {
         }
     }
 
+    #[must_use]
     /// Gets all of the schema types for this target by combining the "core" schema type with any
     /// extension IDs for extensions implemented on the target.
     pub fn schema_types(&self) -> Vec<String> {
