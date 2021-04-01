@@ -6,9 +6,9 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use semver::Version;
 
-use super::fragments::Link;
-use super::fragments::Asset;
-use super::fragments::CommonMetadata;
+use super::common::Link;
+use super::common::Asset;
+use super::common::CommonMetadata;
 use crate::extensions::ItemExtensionProperties;
 
 /// Represents a [STAC Item](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md).
@@ -18,7 +18,8 @@ pub struct Item {
     pub stac_version: Version,
 
     /// A list of extensions the Item implements.
-    pub stac_extensions: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub stac_extensions: Option<Vec<String>>,
 
     /// Provider identifier. The ID should be unique within the Collection that contains the Item.
     pub id: String,

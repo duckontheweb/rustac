@@ -3,6 +3,7 @@ use semver::{VersionReq, Version};
 use serde_json::Value;
 
 use crate::error::{STACResult, STACError};
+use super::ValidationTarget;
 
 /// Gets the URL for the schema associated with the given STAC version, STAC object type, and schema
 /// type.
@@ -44,17 +45,15 @@ pub fn get_schema_url(stac_version: &Version, stac_type: &str, schema_type: &str
 ///
 /// In addition to the errors that may result from calling [`get_schema_url`], this function may
 /// return [`STACError::JSONParse`] if there is an error parsing the schema from the JSON string.
-pub fn get_schema(instance: &Value, schema_type: &str) -> STACResult<Value> {
-    let stac_version = instance.get("stac_version")
-        .ok_or_else(|| STACError::Other(String::from("Could not get stac_version from instance.")))?
-        .as_str()
-        .ok_or_else(|| STACError::Other(String::from("Could not get stac_version from instance.")))?;
-    let stac_version= Version::parse(stac_version)?;
+pub fn get_schema(target: &ValidationTarget, schema_type: &str) -> STACResult<Value> {
+    let stac_version = target.stac_version();
+
+    let instance = target.serialized_object();
     let stac_type = instance.get("type")
         .ok_or_else(|| STACError::Other(String::from("Could not get type from instance.")))?
         .as_str()
         .ok_or_else(|| STACError::Other(String::from("Could not get type from instance.")))?;
-    let schema_url = get_schema_url(&stac_version, stac_type, schema_type)?;
+    let schema_url = get_schema_url(stac_version, stac_type, schema_type)?;
 
     Ok(get(schema_url)?.json()?)
 }
@@ -101,8 +100,14 @@ fn path_from_stac_type(stac_type: &str, schema_type: &str) -> Option<String>
 
 #[cfg(test)]
 mod tests {
-    use serde_json::json;
+    use std::fs;
+    use crate::Item;
     use super::*;
+
+    fn get_test_example(filename: &str) -> String {
+        let path = format!("./tests-data/{}", filename);
+        fs::read_to_string(path).unwrap()
+    }
 
     #[test]
     fn test_get_item_core_schema_url() {
@@ -115,11 +120,10 @@ mod tests {
 
     #[test]
     fn test_get_item_core_schema() {
-        let instance = json!({
-            "type": "Feature",
-            "stac_version": "1.0.0-rc.1",
-        });
-        let schema = get_schema(&instance, "core");
+        let data = get_test_example("simple-item.json");
+        let item: Item = serde_json::from_str(data.as_str()).unwrap();
+        let target = ValidationTarget::from(&item);
+        let schema = get_schema(&target, "core");
 
         assert!(schema.is_ok());
         assert_eq!(schema.unwrap()["title"].as_str(), Some("STAC Item"));
