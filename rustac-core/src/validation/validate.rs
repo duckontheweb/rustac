@@ -1,5 +1,6 @@
 use crate::error::{STACResult};
 use super::{get_schema, ValidationTarget};
+use crate::validation::schema::SchemaType;
 
 /// Checks if the given instance is valid for all schema types associated with it. This will always
 /// check against the "core" schema for this object and will additionally check against schemas
@@ -14,9 +15,8 @@ use super::{get_schema, ValidationTarget};
 ///
 /// This function may return any of the following errors:
 ///
-/// * [`STACError::Other`] if instance does not contain the required fields (`"stac_version"` and
-///    `"type"`) or if no schema URL can be found for this instance and schema type.
-/// * [`STACError::JSONParse`] if there is a problem parsing the schema from the JSON string.
+/// * [`STACError::Other`] if no schema URL can be found for this instance and schema type.
+/// * [`STACError::JSONParse`] if there is a problem parsing a schema from the JSON string.
 ///
 /// [`Value`]: serde_json::Value
 /// [`Item`]: crate::Item
@@ -32,15 +32,20 @@ where
     let schema_types = &target.schema_types();
 
     for schema_type in schema_types {
-        if !is_valid_for_schema_type(&target, schema_type.as_str())? {
-            return Ok(false)
+        match schema_type {
+            SchemaType::Invalid => {},
+            _ => {
+                if !is_valid_for_schema_type(&target, schema_type)? {
+                    return Ok(false)
+                }
+            }
         }
     }
 
     Ok(true)
 }
 
-fn is_valid_for_schema_type(target: &ValidationTarget, schema_type: &str) -> STACResult<bool>
+fn is_valid_for_schema_type(target: &ValidationTarget, schema_type: &SchemaType) -> STACResult<bool>
 {
     let instance = &target.serialized_object();
     let schema = get_schema(&target, schema_type)?;

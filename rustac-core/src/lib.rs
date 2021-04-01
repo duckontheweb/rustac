@@ -26,12 +26,11 @@ extern crate semver;
 extern crate jsonschema;
 
 pub use types::{
-    STACObject,
-    item::Item,
     catalog::Catalog,
     collection::{Collection, Extent, SpatialExtent, TemporalExtent},
-    item_collection::ItemCollection,
-    common::{Link, Asset, Provider}
+    common::{Asset, Link, Provider},
+    item::Item,
+    item_collection::ItemCollection
 };
 
 mod types;

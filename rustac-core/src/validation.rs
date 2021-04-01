@@ -2,13 +2,15 @@
 use std::convert::From;
 
 use semver::Version;
+use serde::Serialize;
 use serde_json::Value;
 
-use crate::{Item, Collection, types::STACObject, Catalog};
-pub use util::{get_schema, get_schema_url};
-pub use validate::{is_valid};
+pub use schema::{get_schema, get_schema_url, SchemaType};
+pub use validate::is_valid;
 
-mod util;
+use crate::{Catalog, Collection, Item};
+
+mod schema;
 mod validate;
 
 /// Represents a valid target for validating against a STAC spec. Implements [`From`] for the
@@ -49,8 +51,8 @@ impl <'a> ValidationTarget<'a> {
     #[must_use]
     /// Gets all of the schema types for this target by combining the "core" schema type with any
     /// extension IDs for extensions implemented on the target.
-    pub fn schema_types(&self) -> Vec<String> {
-        let mut schema_types = vec![String::from("core")];
+    pub fn schema_types(&self) -> Vec<SchemaType> {
+        let mut schema_types = vec![SchemaType::from("core")];
         let stac_extensions = match self.object {
             STACObject::Item(item) => &item.stac_extensions,
             STACObject::Collection(collection) => &collection.stac_extensions,
@@ -58,7 +60,7 @@ impl <'a> ValidationTarget<'a> {
         };
         if let Some(stac_extensions) = stac_extensions {
             for ext in stac_extensions {
-                schema_types.push(ext.clone())
+                schema_types.push(ext.as_str().into())
             }
         }
         schema_types
@@ -89,32 +91,12 @@ impl <'a> From<&'a Catalog> for ValidationTarget<'a> {
     }
 }
 
-// impl From<&ItemCollection> for ValidationTarget {
-//     fn from(item_collection: &ItemCollection) -> Self {
-//         ValidationTarget {
-//             stac_version: item_collection.stac_version.clone(),
-//             stac_type: item_collection.type_.as_str(),
-//             object: STACObject::ItemCollection(item_collection),
-//         }
-//     }
-// }
-//
-// impl From<&Collection> for ValidationTarget {
-//     fn from(collection: &Collection) -> Self {
-//         ValidationTarget {
-//             stac_version: collection.stac_version.clone(),
-//             stac_type: collection.type_.as_str(),
-//             object: STACObject::Collection(collection),
-//         }
-//     }
-// }
-//
-// impl From<&Catalog> for ValidationTarget {
-//     fn from(catalog: &Catalog) -> Self {
-//         ValidationTarget {
-//             stac_version: catalog.stac_version.clone(),
-//             stac_type: catalog.type_.as_str(),
-//             object: STACObject::Catalog(catalog),
-//         }
-//     }
-// }
+/// Enumerates the top-level STAC objects
+#[derive(Serialize)]
+#[serde(untagged)]
+enum STACObject<'a> {
+    Catalog(&'a Catalog),
+    Collection(&'a Collection),
+    Item(&'a Item),
+    // ItemCollection(&'a ItemCollection),
+}
