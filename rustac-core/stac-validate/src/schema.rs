@@ -4,7 +4,7 @@ use serde_json::Value;
 
 use crate::error::{STACError, STACResult};
 
-use super::ValidationTarget;
+use crate::validate::ValidationTarget;
 
 /// Gets the URL for the schema associated with the given STAC version, STAC object type, and schema
 /// type.
