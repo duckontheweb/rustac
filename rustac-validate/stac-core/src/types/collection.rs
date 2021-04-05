@@ -9,7 +9,6 @@ use semver::Version;
 use crate::types::common::Link;
 use crate::types::common::Asset;
 use crate::types::common::Provider;
-use crate::extensions::CollectionExtensionProperties;
 
 /// Implements the [STAC Collection spec](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md).
 #[derive(Serialize, Deserialize)]
@@ -62,10 +61,6 @@ pub struct Collection {
     /// Dictionary of asset objects that can be downloaded, each with a unique key.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub assets: Option<HashMap<String, Asset>>,
-
-    /// Attributes included in a STAC extensions applying to Collection objects.
-    #[serde(flatten)]
-    pub extensions: CollectionExtensionProperties,
 
     /// Additional fields not covered by the STAC spec.
     #[serde(flatten)]
@@ -120,18 +115,5 @@ mod tests {
         let collection: Collection = serde_json::from_str(data.as_str()).unwrap();
 
         assert_eq!(collection.id, String::from("sentinel-2"))
-    }
-
-    #[test]
-    fn test_scientific_extension_collection() {
-        let data = get_test_example("extensions/scientific/collection.json");
-        let collection: Collection = serde_json::from_str(data.as_str()).unwrap();
-
-        assert_eq!(
-            collection.extensions.sci.citation, 
-            Some(String::from("Vega GC, Pertierra LR, Olalla-Tárraga MÁ (2017) \
-            Data from: MERRAclim, a high-resolution global dataset of remotely \
-            sensed bioclimatic variables for ecological modelling. Dryad Digital Repository."))
-        )
     }
 }

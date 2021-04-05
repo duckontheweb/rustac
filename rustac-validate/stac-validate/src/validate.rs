@@ -1,6 +1,6 @@
 use crate::error::{STACResult};
 use super::{get_schema, ValidationTarget};
-use crate::validation::schema::SchemaType;
+use super::schema::SchemaType;
 
 /// Checks if the given instance is valid for all schema types associated with it. This will always
 /// check against the "core" schema for this object and will additionally check against schemas

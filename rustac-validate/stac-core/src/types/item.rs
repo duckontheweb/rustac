@@ -9,7 +9,6 @@ use semver::Version;
 use super::common::Link;
 use super::common::Asset;
 use super::common::CommonMetadata;
-use crate::extensions::ItemExtensionProperties;
 
 /// Represents a [STAC Item](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md).
 #[derive(Serialize, Deserialize)]
@@ -62,10 +61,6 @@ pub struct ItemProperties {
     #[serde(flatten)]
     pub common: CommonMetadata,
 
-    /// Attributes associated with a supported [STAC Extension](https://github.com/radiantearth/stac-spec/tree/v1.0.0-rc.1/extensions)
-    #[serde(flatten)]
-    pub extension: ItemExtensionProperties,
-
     /// Additional fields not covered by the STAC spec.
     #[serde(flatten)]
     pub extra_fields: Value,
@@ -87,17 +82,6 @@ mod test {
         let item: Item = serde_json::from_str(data.as_str()).unwrap();
 
         assert_eq!(item.id, String::from("20201211_223832_CS2"));
-    }
-
-    #[test]
-    fn test_extended_item() {
-        let data = get_test_example("extended-item.json");
-        let item: Item = serde_json::from_str(data.as_str()).unwrap();
-
-        assert_eq!(item.properties.common.platform, Some(String::from("cool_sat2")));
-        assert_eq!(item.properties.extension.view.sun_elevation, Some(54.9));
-        assert_eq!(item.properties.extension.proj.shape, Some(vec![5558, 9559]));
-        assert_eq!(item.properties.extension.sci.doi, Some(String::from("10.5061/dryad.s2v81.2/27.2")));
     }
 
     #[test]
