@@ -1,8 +1,6 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use crate::extensions::AssetExtensionProperties;
-
 /// Attributes described by the [STAC Common Metadata spec](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/common-metadata.md).
 /// These attributes may apply to a STAC Item or Asset.
 #[derive(Serialize, Deserialize)]
@@ -99,10 +97,6 @@ pub struct Asset {
     /// spec.
     #[serde(flatten)]
     pub common: CommonMetadata,
-
-    /// Attributes included in a STAC extensions applying to Asset objects.
-    #[serde(flatten)]
-    pub extensions: AssetExtensionProperties,
 
     /// Additional fields not covered by the STAC spec.
     #[serde(flatten)]

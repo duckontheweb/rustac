@@ -1,17 +1,27 @@
+#![warn(missing_docs)]
+#![deny(clippy::all, clippy::pedantic)]
+#![allow(clippy::module_name_repetitions, clippy::doc_markdown)]
 //! Tools for validating STAC objects
-use std::convert::From;
-
 use semver::Version;
 use serde::Serialize;
 use serde_json::Value;
 
+extern crate stac_core;
+extern crate reqwest;
+extern crate jsonschema;
+extern crate serde_json;
+extern crate serde;
+
+use stac_core::{Catalog, Collection, Item};
 pub use schema::{get_schema, get_schema_url, SchemaType};
 pub use validate::is_valid;
 
-use crate::{Catalog, Collection, Item};
-
 mod schema;
 mod validate;
+pub mod error;
+
+use std::convert::From;
+
 
 /// Represents a valid target for validating against a STAC spec. Implements [`From`] for the
 /// [`Item`], [`Catalog`], and [`Collection`] structs which allows us to use
@@ -22,13 +32,11 @@ pub struct ValidationTarget<'a> {
 
 impl <'a> ValidationTarget<'a> {
 
-    #[must_use]
     /// Gets the internal struct as a serialized [`Value`]
     pub fn serialized_object(&self) -> Value {
         serde_json::to_value(&self.object).unwrap()
     }
 
-    #[must_use]
     /// Gets the STAC spec version associated with this target
     pub fn stac_version(&self) -> &'a Version {
         match self.object {
@@ -38,7 +46,6 @@ impl <'a> ValidationTarget<'a> {
         }
     }
 
-    #[must_use]
     /// Gets the type of this target as a string slice.
     pub fn stac_type(&self) -> &str {
         match self.object {
@@ -48,7 +55,6 @@ impl <'a> ValidationTarget<'a> {
         }
     }
 
-    #[must_use]
     /// Gets all of the schema types for this target by combining the "core" schema type with any
     /// extension IDs for extensions implemented on the target.
     pub fn schema_types(&self) -> Vec<SchemaType> {
@@ -98,5 +104,4 @@ enum STACObject<'a> {
     Catalog(&'a Catalog),
     Collection(&'a Collection),
     Item(&'a Item),
-    // ItemCollection(&'a ItemCollection),
 }
