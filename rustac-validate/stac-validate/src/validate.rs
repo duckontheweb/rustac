@@ -140,24 +140,28 @@ impl <'a> From<&'a Catalog> for ValidationTarget<'a> {
 #[cfg(test)]
 mod tests {
     use std::fs;
-
-    use serde_json;
-
-    use crate::Item;
+    use stac_core::Item;
 
     use super::*;
 
     fn get_test_example(filename: &str) -> String {
-        let path = format!("./tests-data/{}", filename);
+        let path = format!("../test-data/{}", filename);
         fs::read_to_string(path).unwrap()
     }
 
     #[test]
     fn test_valid_item() {
-        let data = get_test_example("core-item.json");
+        let data = get_test_example("core/core-item.json");
         let item: Item = serde_json::from_str(data.as_str()).unwrap();
 
-        // assert!(is_valid_for_schema_type(&item, "core").unwrap());
+        assert!(is_valid(&item).unwrap());
+    }
+
+    #[test]
+    fn test_extended_item() {
+        let data = get_test_example("core/extended-item.json");
+        let item: Item = serde_json::from_str(data.as_str()).unwrap();
+
         assert!(is_valid(&item).unwrap());
     }
 }

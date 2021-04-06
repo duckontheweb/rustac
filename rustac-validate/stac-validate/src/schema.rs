@@ -135,7 +135,7 @@ mod tests {
     use super::*;
 
     fn get_test_example(filename: &str) -> String {
-        let path = format!("./tests-data/{}", filename);
+        let path = format!("../test-data/{}", filename);
         fs::read_to_string(path).unwrap()
     }
 
@@ -151,7 +151,7 @@ mod tests {
 
     #[test]
     fn test_get_item_core_schema() {
-        let data = get_test_example("simple-item.json");
+        let data = get_test_example("core/simple-item.json");
         let item: Item = serde_json::from_str(data.as_str()).unwrap();
         let target = ValidationTarget::from(&item);
         let schema_type = SchemaType::Core;

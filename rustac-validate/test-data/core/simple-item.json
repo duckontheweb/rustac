@@ -1,8 +1,6 @@
 {
-  "stac_version": "1.0.0-rc.1",
-  "stac_extensions": [
-    "https://stac-extensions.github.io/view/v1.0.0/schema.json"
-  ],
+  "stac_version": "1.0.0-rc.2",
+  "stac_extensions": [],
   "type": "Feature",
   "id": "20201211_223832_CS2",
   "bbox": [
@@ -39,42 +37,37 @@
     ]
   },
   "properties": {
-    "datetime": "2020-12-11T22:38:32.125Z",
-    "created": "2020-12-12T01:48:13.725Z",
-    "updated": "2020-12-12T01:48:13.725Z",
-    "platform": "cool_sat2",
-    "instruments": [
-      "cool_sensor_v1"
-    ],
-    "gsd": 0.66,
-    "view:sun_elevation": 54.9,
-    "view:off_nadir": 3.8,
-    "view:sun_azimuth": 135.7
+    "datetime": "2020-12-11T22:38:32.125000Z"
   },
-  "links": [],
+  "collection": "simple-collection",
+  "links": [
+    {
+      "rel": "collection",
+      "href": "./collection.json",
+      "type": "application/json",
+      "title": "Simple Example Collection"
+    },
+    {
+      "rel": "root",
+      "href": "./collection.json",
+      "type": "application/json"
+    }
+  ],
   "assets": {
-    "analytic": {
-      "href": "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2_analytic.tif",
-      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
-      "title": "4-Band Analytic",
-      "roles": [
-        "data"
-      ]
-    },
-    "thumbnail": {
-      "href": "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.jpg",
-      "title": "Thumbnail",
-      "type": "image/png",
-      "roles": [
-        "thumbnail"
-      ]
-    },
     "visual": {
       "href": "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.tif",
       "type": "image/tiff; application=geotiff; profile=cloud-optimized",
       "title": "3-Band Visual",
       "roles": [
         "visual"
+      ]
+    },
+    "thumbnail": {
+      "href": "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.jpg",
+      "title": "Thumbnail",
+      "type": "image/jpeg",
+      "roles": [
+        "thumbnail"
       ]
     }
   }
