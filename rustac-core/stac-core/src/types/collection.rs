@@ -89,31 +89,3 @@ pub struct TemporalExtent {
     /// Potential temporal extents covered by the Collection. 
     pub interval: Vec<Vec<Option<String>>>,
 }
-
-#[cfg(test)]
-mod tests {
-    use std::fs;
-    use serde_json;
-    use crate::Collection;
-
-    fn get_test_example(filename: &str) -> String {
-        let path = format!("./tests-data/{}", filename);
-        fs::read_to_string(path).unwrap()
-    }
-
-    #[test]
-    fn test_collection_example() {
-        let data = get_test_example("collection.json");
-        let collection: Collection = serde_json::from_str(data.as_str()).unwrap();
-
-        assert_eq!(collection.id, String::from("simple-collection"));
-    }
-
-    #[test]
-    fn test_sentinel_2_collection_example() {
-        let data = get_test_example("sentinel-2-collection.json");
-        let collection: Collection = serde_json::from_str(data.as_str()).unwrap();
-
-        assert_eq!(collection.id, String::from("sentinel-2"))
-    }
-}

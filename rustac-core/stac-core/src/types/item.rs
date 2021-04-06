@@ -65,38 +65,3 @@ pub struct ItemProperties {
     #[serde(flatten)]
     pub extra_fields: Value,
 }
-
-#[cfg(test)]
-mod test {
-    use std::fs;
-    use crate::Item;
-
-    fn get_test_example(filename: &str) -> String {
-        let path = format!("./tests-data/{}", filename);
-        fs::read_to_string(path).unwrap()
-    }
-
-    #[test]
-    fn test_simple_item() {
-        let data = get_test_example("simple-item.json");
-        let item: Item = serde_json::from_str(data.as_str()).unwrap();
-
-        assert_eq!(item.id, String::from("20201211_223832_CS2"));
-    }
-
-    #[test]
-    fn test_core_item() {
-        let data = get_test_example("core-item.json");
-        let item: Item = serde_json::from_str(data.as_str()).unwrap();
-        
-        assert_eq!(item.properties.common.constellation, Some(String::from("ion")));
-    }
-
-    #[test]
-    fn test_scientific_extension_item() {
-        let data = get_test_example("extensions/scientific/item.json");
-        let item: Item = serde_json::from_str(data.as_str()).unwrap();
-
-        assert_eq!(item.links[2].rel, String::from("cite-as"));
-    }
-}
