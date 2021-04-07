@@ -2,6 +2,5 @@
 
 members = [
     "stac-core",
-    "stac-extensions",
     "stac-validate"
 ]
