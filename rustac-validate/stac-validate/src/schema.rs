@@ -26,11 +26,13 @@ use crate::validate::ValidationTarget;
 /// [How to Differentiate STAC Files]: https://github.com/radiantearth/stac-spec/blob/master/best-practices.md#how-to-differentiate-stac-files
 pub fn get_schema_url(stac_version: &Version, stac_type: &str, schema_type: &SchemaType) -> STACResult<String> {
     let root_url = root_url_from_version(stac_version);
-    let path = path_from_stac_type(stac_type, schema_type);
-    let url = path.map(|path| {
-        format!("{}/{}", root_url.as_str(), path.as_str())
-    });
-    url.ok_or_else(|| STACError::Other(String::from("Could not find schema URL.")))
+    path_from_stac_type(stac_type, schema_type)
+        .map(|path| {
+            vec![root_url, path].join("/")
+        })
+        .ok_or_else(|| {
+            STACError::Other(String::from("Could not find schema URL."))
+        })
 }
 
 /// Gets the JSON schema for the given STAC object and schema type as a
@@ -47,14 +49,11 @@ pub fn get_schema_url(stac_version: &Version, stac_type: &str, schema_type: &Sch
 /// In addition to the errors that may result from calling [`get_schema_url`], this function may
 /// return [`STACError::JSONParse`] if there is an error parsing the schema from the JSON string.
 pub fn get_schema(target: &ValidationTarget, schema_type: &SchemaType) -> STACResult<Value> {
-    let stac_version = target.stac_version();
-
-    let instance = target.serialized_object();
-    let stac_type = instance.get("type")
-        .ok_or_else(|| STACError::Other(String::from("Could not get type from instance.")))?
-        .as_str()
-        .ok_or_else(|| STACError::Other(String::from("Could not get type from instance.")))?;
-    let schema_url = get_schema_url(stac_version, stac_type, schema_type)?;
+    let schema_url = get_schema_url(
+        target.stac_version(), 
+        target.stac_type(), 
+        schema_type
+    )?;
 
     Ok(get(schema_url)?.json()?)
 }
