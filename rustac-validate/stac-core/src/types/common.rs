@@ -1,3 +1,4 @@
+use chrono::{DateTime, FixedOffset};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -15,7 +16,9 @@ pub struct CommonMetadata {
 
     /// The searchable date and time of the assets, in UTC. It is formatted according to [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
     /// `null` ([`None`]) is allowed, but requires `start_datetime` and `end_datetime` to be set.
-    pub datetime: Option<String>,
+    #[serde(default)]
+    #[serde(with = "optional_datetime")]
+    pub datetime: Option<DateTime<FixedOffset>>,
 
     /// Creation date and time of the corresponding data
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -28,12 +31,16 @@ pub struct CommonMetadata {
     /// The first or start date and time for the Item, in UTC. It is formatted as date-time according to [RFC 3339, section
     /// 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub start_datetime: Option<String>,
+    #[serde(default)]
+    #[serde(with = "optional_datetime")]
+    pub start_datetime: Option<DateTime<FixedOffset>>,
 
     /// The last or end date and time for the Item, in UTC. It is formatted as date-time according to [RFC 3339, section
     /// 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub end_datetime: Option<String>,
+    #[serde(default)]
+    #[serde(with = "optional_datetime")]
+    pub end_datetime: Option<DateTime<FixedOffset>>,
 
     /// Item's license(s), either a SPDX [License identifier](https://spdx.org/licenses/), `"various"` if multiple licenses apply or `"proprietary"` for all
     /// other cases. Should be defined at the Collection level if possible.
@@ -167,4 +174,85 @@ pub enum ProviderRoles {
     /// Maps to the `"host"` value
     #[serde(rename = "host")]
     Host,
+}
+
+mod optional_datetime {
+    use chrono::{DateTime, FixedOffset};
+    use serde::{self, Serializer, Deserializer, de};
+    use std::fmt;
+
+    const FORMAT: &str = "%Y-%m-%dT%H:%M:%SZ";
+
+    pub fn serialize<S>(
+        datetime: &Option<DateTime<FixedOffset>>,
+        serializer: S
+    ) -> Result<S::Ok, S::Error> 
+    where 
+        S: Serializer,
+    {
+        if let Some(datetime) = datetime {
+            let s = format!("{}", datetime.format(FORMAT));
+            serializer.serialize_str(&s)
+        } else {
+            serializer.serialize_none()
+        }
+    }
+
+    pub fn deserialize<'de, D>(
+        deserializer: D,
+    ) -> Result<Option<DateTime<FixedOffset>>, D::Error>
+    where
+        D: Deserializer<'de> 
+    {
+        deserializer.deserialize_option(OptionalDatetimeVisitor)
+    }
+
+    struct OptionalDatetimeVisitor;
+
+    impl <'de> de::Visitor<'de> for OptionalDatetimeVisitor {
+        type Value = Option<DateTime<FixedOffset>>;
+
+        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+            write!(formatter, "null or RFC3339 datetime string")
+        }
+
+        fn visit_none<E>(self) -> Result<Self::Value, E> 
+        where
+            E: de::Error,
+        {
+            Ok(None)
+        }
+
+        fn visit_unit<E>(self) -> Result<Self::Value, E> 
+        where
+            E: de::Error,
+        {
+            Ok(None)
+        }
+
+        fn visit_some<D>(self, d: D) -> Result<Option<DateTime<FixedOffset>>, D::Error>
+        where 
+            D: de::Deserializer<'de>
+        {
+            Ok(Some(d.deserialize_str(DateTimeFromRFC3339Visitor)?))
+        }
+    }
+
+    struct DateTimeFromRFC3339Visitor;
+
+    impl <'de> de::Visitor<'de> for DateTimeFromRFC3339Visitor {
+        type Value = DateTime<FixedOffset>;
+
+        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+            write!(formatter, "RFC3339 datetime string")
+        }
+
+        fn visit_str<E>(self, value: &str) -> Result<Self::Value, E> 
+        where
+            E: de::Error
+        {
+            println!("'{}'", &value);
+            DateTime::parse_from_rfc3339(&value).map_err(E::custom)
+        }
+    }
 }
