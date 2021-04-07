@@ -13,6 +13,7 @@ extern crate serde;
 extern crate serde_json;
 extern crate geojson;
 extern crate semver;
+extern crate chrono;
 
 pub use types::{
     catalog::Catalog,
