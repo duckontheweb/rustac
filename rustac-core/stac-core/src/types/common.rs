@@ -251,7 +251,6 @@ mod optional_datetime {
         where
             E: de::Error
         {
-            println!("'{}'", &value);
             DateTime::parse_from_rfc3339(&value).map_err(E::custom)
         }
     }
