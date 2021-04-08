@@ -43,8 +43,6 @@ fn test_collectionless_item() {
 fn test_extended_item() {
     let data = get_test_example("core/extended-item.json");
     let item: Item = serde_json::from_str(data.as_str()).unwrap();
-    
-    println!("{:#?}", &item.properties.extra_fields);
 
     let epsg = &item.properties.extra_fields["proj:epsg"];
     assert!(epsg.is_number());
