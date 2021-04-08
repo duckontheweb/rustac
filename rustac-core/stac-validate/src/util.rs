@@ -16,12 +16,6 @@ pub fn is_valid_for_schema_type(target: &ValidationTarget, schema_uri: &str) -> 
 
 pub fn get_schema_root(stac_version: &Version) -> String
 {
-    // let stac_version = match self.object {
-    //     STACObject::Item(item) => &item.stac_version,
-    //     STACObject::Collection(collection) => &collection.stac_version,
-    //     STACObject::Catalog(catalog) => &catalog.stac_version,
-    // };
-
     let at_least_v1 = VersionReq::parse(">=1.0.0-beta.1").unwrap();
 
     if at_least_v1.matches(&stac_version) {

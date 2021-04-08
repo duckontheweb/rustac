@@ -5,7 +5,7 @@
 
 use stac_core::{Catalog, Collection, Item};
 use std::convert::From;
-use semver::{Version, VersionReq};
+use semver::Version;
 use serde_json::Value;
 
 use error::STACResult;
@@ -84,7 +84,6 @@ impl <'a> ValidationTarget<'a> {
     /// extension IDs for extensions implemented on the target.
     fn schema_uris(&self) -> Vec<String> {
         let mut schema_uris = vec![self.core_schema_uri()];
-        let at_least_rc2 = VersionReq::parse(">=1.0.0-rc.2").unwrap();
         let stac_extensions = match self.object {
             STACObject::Item(item) => &item.stac_extensions,
             STACObject::Collection(collection) => &collection.stac_extensions,
@@ -92,13 +91,13 @@ impl <'a> ValidationTarget<'a> {
         };
         if let Some(stac_extensions) = stac_extensions {
             for ext in stac_extensions {
-                if at_least_rc2.matches(&self.stac_version()) {
-                    // Starting with STAC v1.0.0-rc.2 extensions are identified by their full conformance (schema) URI rather than using 
-                    // an extension ID.
-                    schema_uris.push(ext.as_str().into());
+                if ext.starts_with("https://") {
+                    // If the object uses a full conformance URI as the extension ID (usually after about v1.0.0-rc.1), then just use 
+                    // this as the schema URI...
+                    schema_uris.push(ext.as_str().into())
                 } else if let Some(extension_uri) = get_extension_path(ext.as_str(), &self.object) {
-                    // Prior to v1.0.0-rc.2 extensions had a short ID and we need to look up the schema based on the ID. This may return 
-                    // None since we only support a pre-defined set of extensions in this package.
+                    // ...otherwise try to map a short extension ID to a schema URI. This may result in a None response if the 
+                    // extension ID isn't explicitly mapped in get_extension_path.
                     schema_uris.push(extension_uri);
                 }
             }
@@ -143,3 +142,30 @@ impl <'a> From<&'a Catalog> for ValidationTarget<'a> {
 
 mod util;
 pub mod error;
+
+#[cfg(test)]
+mod tests {
+    use std::fs;
+    use stac_core::Item;
+    use super::ValidationTarget;
+
+    fn get_example(filename: &str) -> String {
+        let path = format!("../stac-examples/{}", filename);
+        fs::read_to_string(&path).unwrap_or_else(|_| panic!("Could not open {}", &path.as_str())) 
+    }
+
+    #[test]
+    fn test_schema_uris() {
+        let data = get_example("extensions/eo/item.json");
+        let item: Item = serde_json::from_str(data.as_str()).unwrap();
+
+        let target = ValidationTarget::from(&item);
+
+        let schema_uris = target.schema_uris();
+
+        assert_eq!(schema_uris.len(), 2);
+        
+        let eo_uri = String::from("https://stac-extensions.github.io/eo/v1.0.0/schema.json");
+        assert!(schema_uris.contains(&eo_uri));
+    }
+}
