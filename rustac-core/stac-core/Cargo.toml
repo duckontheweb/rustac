@@ -8,6 +8,7 @@ description = "Rust library for working with the SpatioTemporal Asset Catalog (S
 categories = ["data-structures"]
 keywords = ["stac"]
 readme = "README.md"
+license = "Apache-2.0"
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
