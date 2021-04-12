@@ -1,6 +1,10 @@
 #![warn(missing_docs)]
 #![deny(clippy::all, clippy::pedantic)]
-#![allow(clippy::module_name_repetitions, clippy::doc_markdown)]
+#![allow(
+    clippy::module_name_repetitions, 
+    clippy::doc_markdown,
+    clippy::upper_case_acronyms
+)]
 //! The `stac-core` crate provides primitive types for working with SpatioTemporal Asset Catalog (STAC) entities,
 //! including:
 //! 
