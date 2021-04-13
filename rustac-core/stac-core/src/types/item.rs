@@ -10,7 +10,7 @@ use super::common::Link;
 use super::common::Asset;
 use super::common::CommonMetadata;
 
-/// Represents a [STAC Item](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md).
+/// Representation of a [STAC Item](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md).
 #[derive(Serialize, Deserialize)]
 pub struct Item {
     /// The STAC version the Item implements.
@@ -48,7 +48,7 @@ pub struct Item {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub collection: Option<String>,
 
-    /// Additional fields not covered by the STAC spec.
+    /// Additional fields not covered by the core STAC spec.
     #[serde(flatten)]
     pub extra_fields: Value,
 }
@@ -57,11 +57,11 @@ pub struct Item {
 /// spec](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md#properties-object)
 #[derive(Serialize, Deserialize)]
 pub struct ItemProperties {
-    /// Attributes that are part of the [Common Metadata](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/common-metadata.md#date-and-time-range)
+    /// Fields that are part of the [Common Metadata](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/common-metadata.md#date-and-time-range)
     #[serde(flatten)]
     pub common: CommonMetadata,
 
-    /// Additional fields not covered by the STAC spec.
+    /// Additional property fields not covered by the core STAC spec.
     #[serde(flatten)]
     pub extra_fields: Value,
 }

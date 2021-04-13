@@ -10,7 +10,7 @@ use crate::types::common::Link;
 use crate::types::common::Asset;
 use crate::types::common::Provider;
 
-/// Implements the [STAC Collection spec](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md).
+/// Representation of a [STAC Collection](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md).
 #[derive(Serialize, Deserialize)]
 pub struct Collection {
     /// The STAC version the Collection implements.
@@ -62,12 +62,12 @@ pub struct Collection {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub assets: Option<HashMap<String, Asset>>,
 
-    /// Additional fields not covered by the STAC spec.
+    /// Additional fields not covered by the core STAC spec.
     #[serde(flatten)]
     pub extra_fields: Value,
 }
 
-/// Implementation of [Extent Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md#extent-object)
+/// Representation of [Extent Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md#extent-object)
 #[derive(Serialize, Deserialize)]
 pub struct Extent {
     /// Potential spatial extents covered by the Collection.
@@ -76,14 +76,14 @@ pub struct Extent {
     pub temporal: TemporalExtent,
 }
 
-/// Implementation of [Spatial Extent Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md#spatial-extent-object)
+/// Representation of [Spatial Extent Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md#spatial-extent-object)
 #[derive(Serialize, Deserialize)]
 pub struct SpatialExtent {
     /// Potential spatial extents covered by the Collection.
     pub bbox: Vec<Bbox>,
 }
 
-/// Implementation of [Temporal Extent Object](https://github.com/radiantearth/stac-spec/blob/master/collection-spec/collection-spec.md#temporal-extent-object)
+/// Implementation of [Temporal Extent Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md#temporal-extent-object)
 #[derive(Serialize, Deserialize)]
 pub struct TemporalExtent {
     /// Potential temporal extents covered by the Collection. 

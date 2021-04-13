@@ -73,7 +73,7 @@ pub struct CommonMetadata {
     pub gsd: Option<f32>,
 }
 
-/// Represents a [STAC Asset Object](https://github.com/radiantearth/stac-spec/blob/master/item-spec/item-spec.md#asset-object)
+/// Represents a [STAC Asset Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md#asset-object)
 /// that may be used by either an Item or a Collection.
 #[derive(Serialize, Deserialize)]
 pub struct Asset {
@@ -88,24 +88,24 @@ pub struct Asset {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 
-    /// [Media type](https://github.com/radiantearth/stac-spec/blob/master/item-spec/item-spec.md#asset-media-type) of the asset.
-    /// See the [common media types](https://github.com/radiantearth/stac-spec/blob/master/best-practices.md#common-media-types-in-stac)
+    /// [Media type](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md#asset-media-type) of the asset.
+    /// See the [common media types](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/best-practices.md#common-media-types-in-stac)
     /// in the best practice doc for commonly used asset types.
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
 
-    /// The [semantic roles](https://github.com/radiantearth/stac-spec/blob/master/item-spec/item-spec.md#asset-role-types) of the asset,
+    /// The [semantic roles](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md#asset-role-types) of the asset,
     /// similar to the use of rel in links.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub roles: Option<Vec<String>>,
 
-    /// Attributes included in the [STAC Common Metadata](https://github.com/radiantearth/stac-spec/blob/master/item-spec/common-metadata.md)
+    /// Attributes included in the [STAC Common Metadata](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/common-metadata.md)
     /// spec.
     #[serde(flatten)]
     pub common: CommonMetadata,
 
-    /// Additional fields not covered by the STAC spec.
+    /// Additional fields not covered by the core STAC spec.
     #[serde(flatten)]
     pub extra_fields: Value,
 }
