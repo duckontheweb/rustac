@@ -6,7 +6,7 @@ use semver::Version;
 
 use super::common::Link;
 
-/// Represents a [STAC Catalog](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/catalog-spec/catalog-spec.md).
+/// Representation of a[STAC Catalog](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/catalog-spec/catalog-spec.md).
 #[derive(Serialize, Deserialize)]
 pub struct Catalog {
     /// The STAC version the Catalog implements.
@@ -39,7 +39,7 @@ pub struct Catalog {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub links: Option<Vec<Link>>,
 
-    /// Additional fields not covered by the STAC spec.
+    /// Additional fields not covered by the core STAC spec.
     #[serde(flatten)]
     pub extra_fields: Value,
 }

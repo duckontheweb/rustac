@@ -1,13 +1,15 @@
-//! Possible errors when working with STAC objects.
+//! Defines custom error `enum` and [`Result`] types.
 use std::error;
 use std::result;
 use std::fmt;
-use std::str::FromStr;
 
 /// Alias for [`result::Result`] that uses a [`STACError`]
 pub type STACResult<T> = result::Result<T, STACError>;
 
-/// All errors that may be encountered when working with STAC objects in this package
+/// Covers errors that may be encountered when working with STAC objects in this package. Each variant has an 
+/// external error associated with it, except for `Other`, which simply has a [`String`]. Implementation of 
+/// [`fmt::Display`] is delegated to the source error, except for the `Other` variant, which simply prints the 
+/// associated [`String`].
 #[derive(Debug)]
 pub enum STACError {
     /// Errors resulting from failed serialization/deserialization of types using the [`serde_json`]
@@ -36,14 +38,6 @@ impl fmt::Display for STACError {
 impl From<serde_json::Error> for STACError {
     fn from(err: serde_json::Error) -> STACError {
         STACError::JSONParse(err)
-    }
-}
-
-impl FromStr for STACError {
-    type Err = Self;
-
-    fn from_str(s: &str) -> STACResult<Self> {
-        Ok(STACError::Other(String::from(s)))
     }
 }
 
