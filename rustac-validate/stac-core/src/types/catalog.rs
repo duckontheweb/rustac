@@ -1,8 +1,8 @@
 //! Implementation of the [STAC Catalog spec](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/catalog-spec/catalog-spec.md)
-use std::collections::HashMap;
+use semver::Version;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use semver::Version;
+use std::collections::HashMap;
 
 use super::common::Link;
 
@@ -28,7 +28,7 @@ pub struct Catalog {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
 
-    /// Detailed multi-line description to fully explain the Catalog. 
+    /// Detailed multi-line description to fully explain the Catalog.
     pub description: String,
 
     /// A map of property summaries, either a set of values or statistics such as a range.

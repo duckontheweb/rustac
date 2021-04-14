@@ -1,14 +1,14 @@
 //! Defines custom error `enum` and [`Result`] types.
 use std::error;
-use std::result;
 use std::fmt;
+use std::result;
 
 /// Alias for [`result::Result`] that uses a [`STACError`]
 pub type STACResult<T> = result::Result<T, STACError>;
 
-/// Covers errors that may be encountered when working with STAC objects in this package. Each variant has an 
-/// external error associated with it, except for `Other`, which simply has a [`String`]. Implementation of 
-/// [`fmt::Display`] is delegated to the source error, except for the `Other` variant, which simply prints the 
+/// Covers errors that may be encountered when working with STAC objects in this package. Each variant has an
+/// external error associated with it, except for `Other`, which simply has a [`String`]. Implementation of
+/// [`fmt::Display`] is delegated to the source error, except for the `Other` variant, which simply prints the
 /// associated [`String`].
 #[derive(Debug)]
 pub enum STACError {
@@ -30,7 +30,7 @@ impl fmt::Display for STACError {
         match &self {
             STACError::JSONParse(source) => source.fmt(f),
             STACError::SemVer(source) => source.fmt(f),
-            STACError::Other(message) => write!(f, "{}", message.as_str())
+            STACError::Other(message) => write!(f, "{}", message.as_str()),
         }
     }
 }

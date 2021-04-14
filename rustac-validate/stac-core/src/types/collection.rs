@@ -2,12 +2,12 @@
 use std::collections::HashMap;
 
 use geojson::Bbox;
+use semver::Version;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use semver::Version;
 
-use crate::types::common::Link;
 use crate::types::common::Asset;
+use crate::types::common::Link;
 use crate::types::common::Provider;
 
 /// Representation of a [STAC Collection](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md).
@@ -15,7 +15,7 @@ use crate::types::common::Provider;
 pub struct Collection {
     /// The STAC version the Collection implements.
     pub stac_version: Version,
-    
+
     /// Must be set to `"Collection"` to be a valid Collection.
     /// **This maps to the STAC `"type"` attribute, which is a reserved keyword.**
     #[serde(rename = "type")]
@@ -39,11 +39,11 @@ pub struct Collection {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub keywords: Option<Vec<String>>,
 
-    /// Collection's license(s), either a SPDX [License identifier](https://spdx.org/licenses/), `"various"` if multiple licenses apply 
+    /// Collection's license(s), either a SPDX [License identifier](https://spdx.org/licenses/), `"various"` if multiple licenses apply
     /// or `"proprietary"` for all other cases.
     pub license: String,
 
-    /// A list of providers, which may include all organizations capturing or processing the data or the hosting provider. Providers 
+    /// A list of providers, which may include all organizations capturing or processing the data or the hosting provider. Providers
     /// should be listed in chronological order with the most recent provider being the last element of the list.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub providers: Option<Vec<Provider>>,
@@ -86,6 +86,6 @@ pub struct SpatialExtent {
 /// Implementation of [Temporal Extent Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md#temporal-extent-object)
 #[derive(Serialize, Deserialize)]
 pub struct TemporalExtent {
-    /// Potential temporal extents covered by the Collection. 
+    /// Potential temporal extents covered by the Collection.
     pub interval: Vec<Vec<Option<String>>>,
 }

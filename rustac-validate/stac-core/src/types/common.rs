@@ -152,7 +152,7 @@ pub struct Provider {
 
     /// Homepage on which the provider describes the dataset and publishes contact information.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub url: Option<String>
+    pub url: Option<String>,
 }
 
 /// Allowed `"roles"` values for a [`Provider`] object.
@@ -178,16 +178,16 @@ pub enum ProviderRoles {
 
 mod optional_datetime {
     use chrono::{DateTime, FixedOffset};
-    use serde::{self, Serializer, Deserializer, de};
+    use serde::{self, de, Deserializer, Serializer};
     use std::fmt;
 
     const FORMAT: &str = "%Y-%m-%dT%H:%M:%SZ";
 
     pub fn serialize<S>(
         datetime: &Option<DateTime<FixedOffset>>,
-        serializer: S
-    ) -> Result<S::Ok, S::Error> 
-    where 
+        serializer: S,
+    ) -> Result<S::Ok, S::Error>
+    where
         S: Serializer,
     {
         if let Some(datetime) = datetime {
@@ -198,32 +198,30 @@ mod optional_datetime {
         }
     }
 
-    pub fn deserialize<'de, D>(
-        deserializer: D,
-    ) -> Result<Option<DateTime<FixedOffset>>, D::Error>
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<DateTime<FixedOffset>>, D::Error>
     where
-        D: Deserializer<'de> 
+        D: Deserializer<'de>,
     {
         deserializer.deserialize_option(OptionalDatetimeVisitor)
     }
 
     struct OptionalDatetimeVisitor;
 
-    impl <'de> de::Visitor<'de> for OptionalDatetimeVisitor {
+    impl<'de> de::Visitor<'de> for OptionalDatetimeVisitor {
         type Value = Option<DateTime<FixedOffset>>;
 
         fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
             write!(formatter, "null or RFC3339 datetime string")
         }
 
-        fn visit_none<E>(self) -> Result<Self::Value, E> 
+        fn visit_none<E>(self) -> Result<Self::Value, E>
         where
             E: de::Error,
         {
             Ok(None)
         }
 
-        fn visit_unit<E>(self) -> Result<Self::Value, E> 
+        fn visit_unit<E>(self) -> Result<Self::Value, E>
         where
             E: de::Error,
         {
@@ -231,8 +229,8 @@ mod optional_datetime {
         }
 
         fn visit_some<D>(self, d: D) -> Result<Option<DateTime<FixedOffset>>, D::Error>
-        where 
-            D: de::Deserializer<'de>
+        where
+            D: de::Deserializer<'de>,
         {
             Ok(Some(d.deserialize_str(DateTimeFromRFC3339Visitor)?))
         }
@@ -240,16 +238,16 @@ mod optional_datetime {
 
     struct DateTimeFromRFC3339Visitor;
 
-    impl <'de> de::Visitor<'de> for DateTimeFromRFC3339Visitor {
+    impl<'de> de::Visitor<'de> for DateTimeFromRFC3339Visitor {
         type Value = DateTime<FixedOffset>;
 
         fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
             write!(formatter, "RFC3339 datetime string")
         }
 
-        fn visit_str<E>(self, value: &str) -> Result<Self::Value, E> 
+        fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
         where
-            E: de::Error
+            E: de::Error,
         {
             DateTime::parse_from_rfc3339(&value).map_err(E::custom)
         }
