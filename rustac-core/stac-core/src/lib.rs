@@ -1,25 +1,25 @@
 #![warn(missing_docs)]
 #![deny(clippy::all, clippy::pedantic)]
 #![allow(
-    clippy::module_name_repetitions, 
+    clippy::module_name_repetitions,
     clippy::doc_markdown,
     clippy::upper_case_acronyms
 )]
 //! The `stac-core` crate provides primitive types for working with SpatioTemporal Asset Catalog (STAC) entities,
 //! including:
-//! 
+//!
 //! * [Items]
 //! * [Collections]
 //! * [Catalogs]
-//! 
+//!
 //! ## Data Types
-//! 
+//!
 //! All objects can be serialized from JSON using [`serde`] and [`serde_json`].
-//! 
-//! This library tries to be consistent in how it maps a STAC type to a Rust type. Any STAC attributes that are 
-//! required are represented as one of the Rust types listed below. Any optional STAC attributes 
+//!
+//! This library tries to be consistent in how it maps a STAC type to a Rust type. Any STAC attributes that are
+//! required are represented as one of the Rust types listed below. Any optional STAC attributes
 //! are represented as an [`Option`] with a value that is one of the Rust types listed below.
-//! 
+//!
 //! | STAC Type      | Rust Type             |
 //! |----------------|-----------------------|
 //! | `string`       | [`String`]            |
@@ -29,29 +29,29 @@
 //! | `geometry`     | [`geojson::Geometry`] |
 //! | `bbox`         | [`geojson::Bbox`]     |
 //! | `stac_version` | [`semver::Version`] |
-//! 
+//!
 //! ## Additional Fields & Extensions
-//! 
-//! STAC objects may contain fields not included in the core STAC spec itself. These fields are not serialized into 
-//! "primitive" Rust types, but instead are flattened into a [`serde_json::Value`] in the `extra_fields` field 
-//! on the `struct`. *This includes fields that may be defined as part of a [STAC Extension].* Support for accessing extension 
+//!
+//! STAC objects may contain fields not included in the core STAC spec itself. These fields are not serialized into
+//! "primitive" Rust types, but instead are flattened into a [`serde_json::Value`] in the `extra_fields` field
+//! on the `struct`. *This includes fields that may be defined as part of a [STAC Extension].* Support for accessing extension
 //! fields as Rust types will be added in a separate `stac-extensions` crate that is currently under development.
-//! 
+//!
 //! ## Validation
-//! 
-//! This crate does not do any validation of STAC objects beyond ensuring that they can be properly deserialized. For validation 
+//!
+//! This crate does not do any validation of STAC objects beyond ensuring that they can be properly deserialized. For validation
 //! of STAC entities using JSON Schema, see the `stac-validate` crate.
-//! 
+//!
 //! # Examples
-//! 
+//!
 //! Create an [`Item`] by deserializing one of the example JSON files.
-//! 
+//!
 //! ```
 //! use stac_core::Item;
 //! use stac_core::error::{STACError, STACResult};
 //! use semver::Version;
 //! use serde_json::json;
-//! 
+//!
 //! fn main() -> STACResult<()> {
 //!     let example = json!({
 //!     "stac_version": "1.0.0-rc.2",
@@ -107,16 +107,16 @@
 //!       }
 //!     }
 //!   });
-//! 
+//!
 //!   let item: Item = serde_json::from_value(example)?;
-//! 
+//!
 //!   assert_eq!(item.stac_version, Version::parse("1.0.0-rc.2")?);
 //!   assert_eq!(item.type_, String::from("Feature"));
-//! 
+//!
 //!   Ok(())
 //! }
 //! ```
-//! 
+//!
 //! [STAC Extension]: https://stac-extensions.github.io/
 //! [Items]: https://github.com/radiantearth/stac-spec/blob/master/item-spec/item-spec.md
 //! [Collections]: https://github.com/radiantearth/stac-spec/blob/master/collection-spec/collection-spec.md
@@ -128,5 +128,5 @@ pub use types::{
     item::Item,
 };
 
-mod types;
 pub mod error;
+mod types;
