@@ -21,7 +21,8 @@ fn test_eo_extended_item() { test_example("extensions/eo/item.json") }
 
 #[test]
 #[ignore]
-// jsonschema is validating this even though it should not pass. 
+// jsonschema is saying it is valid this even though it is not
+// See https://github.com/Stranger6667/jsonschema-rs/issues/183 for details
 fn test_invalid_eo_extended_item() {
     let data = get_example("extensions/eo/item.json");
     let mut value: Value = serde_json::from_str(data.as_str()).unwrap();
