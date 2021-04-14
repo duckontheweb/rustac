@@ -1,6 +1,10 @@
 #![warn(missing_docs)]
 #![deny(clippy::all, clippy::pedantic)]
-#![allow(clippy::module_name_repetitions, clippy::doc_markdown)]
+#![allow(
+    clippy::module_name_repetitions, 
+    clippy::doc_markdown,
+    clippy::upper_case_acronyms
+)]
 //! Tools for validating STAC objects
 
 use stac_core::{Catalog, Collection, Item};

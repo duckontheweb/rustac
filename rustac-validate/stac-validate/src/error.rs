@@ -20,13 +20,8 @@ pub enum STACError {
     /// Errors resulting from failed HTTP requests in the [`reqwest`] package
     HTTP(reqwest::Error),
 
-    /// Errors resulting from failed JSON Schema validation in the [`jsonschema`] package
-    Validation(String),
-
     /// Errors resulting from failed JSON Schema compilation in the [`jsonschema`] package
     Compilation(jsonschema::CompilationError),
-
-
 
     /// Other errors not covered by the variants above.
     Other(String),
@@ -41,7 +36,7 @@ impl fmt::Display for STACError {
             STACError::SemVer(source) => source.fmt(f),
             STACError::HTTP(source) => source.fmt(f),
             STACError::Compilation(source) => source.fmt(f),
-            STACError::Validation(message) | STACError::Other(message) => {
+            STACError::Other(message) => {
                 write!(f, "{}", message.as_str())
             },
 
