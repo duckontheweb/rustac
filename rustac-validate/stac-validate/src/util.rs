@@ -1,3 +1,4 @@
+use jsonschema::{JSONSchema, ErrorIterator};
 use reqwest::blocking::get;
 use semver::{VersionReq, Version};
 use serde::{Serialize};
@@ -7,14 +8,14 @@ use crate::{
     ValidationTarget
 };
 
-pub fn is_valid_for_schema_type(target: &ValidationTarget, schema_uri: &str) -> STACResult<bool>
+pub(crate) fn is_valid_for_schema_type(target: &ValidationTarget, schema_uri: &str) -> STACResult<bool>
 {
     let instance = &target.serialized_object();
     let schema = get(schema_uri)?.json()?;
     Ok(jsonschema::is_valid(&schema, instance))
 }
 
-pub fn get_schema_root(stac_version: &Version) -> String
+pub(crate) fn get_schema_root(stac_version: &Version) -> String
 {
     let at_least_v1 = VersionReq::parse(">=1.0.0-beta.1").unwrap();
 
@@ -25,7 +26,7 @@ pub fn get_schema_root(stac_version: &Version) -> String
     }
 }
 
-pub fn get_extension_path(extension_id: &str, stac_type: &STACObject) -> Option<String>
+pub(crate) fn get_extension_path(extension_id: &str, stac_type: &STACObject) -> Option<String>
 {
     match extension_id {
         
