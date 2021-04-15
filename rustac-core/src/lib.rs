@@ -5,7 +5,7 @@
     clippy::doc_markdown,
     clippy::upper_case_acronyms
 )]
-//! The `stac-core` crate provides primitive types for working with SpatioTemporal Asset Catalog (STAC) entities,
+//! The `rustac-core` crate provides primitive types for working with SpatioTemporal Asset Catalog (STAC) entities,
 //! including:
 //!
 //! * [Items]
@@ -47,8 +47,8 @@
 //! Create an [`Item`] by deserializing one of the example JSON files.
 //!
 //! ```
-//! use stac_core::Item;
-//! use stac_core::error::{STACError, STACResult};
+//! use rustac_core::Item;
+//! use rustac_core::error::{STACError, STACResult};
 //! use semver::Version;
 //! use serde_json::json;
 //!

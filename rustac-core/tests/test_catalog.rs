@@ -1,7 +1,7 @@
 mod helpers;
 
 use helpers::get_test_example;
-use stac_core::Catalog;
+use rustac_core::Catalog;
 
 #[test]
 fn test_core_catalog() {

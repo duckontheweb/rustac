@@ -2,7 +2,7 @@ mod helpers;
 
 use chrono::DateTime;
 use helpers::get_test_example;
-use stac_core::Item;
+use rustac_core::Item;
 
 #[test]
 fn test_core_item() {

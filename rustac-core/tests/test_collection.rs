@@ -1,7 +1,7 @@
 mod helpers;
 
 use helpers::get_test_example;
-use stac_core::Collection;
+use rustac_core::Collection;
 
 #[test]
 fn test_core_collection() {
