@@ -2,7 +2,7 @@ use jsonschema::{JSONSchema, ErrorIterator};
 use reqwest::blocking::get;
 use semver::{VersionReq, Version};
 use serde::{Serialize};
-use stac_core::{Item, Collection, Catalog};
+use rustac_core::{Item, Collection, Catalog};
 use crate::{
     error::STACResult,
     ValidationTarget

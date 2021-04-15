@@ -1,7 +1,7 @@
 mod helpers;
 use serde_json::Value;
-use stac_core::Item;
-use stac_validate::is_valid;
+use rustac_core::Item;
+use rustac_validate::is_valid;
 use helpers::{test_example, get_example};
 
 #[test] 

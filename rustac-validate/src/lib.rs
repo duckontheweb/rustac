@@ -7,7 +7,7 @@
 )]
 //! Tools for validating STAC objects
 
-use stac_core::{Catalog, Collection, Item};
+use rustac_core::{Catalog, Collection, Item};
 use std::convert::From;
 use semver::Version;
 use serde_json::Value;
@@ -17,7 +17,7 @@ use util::{get_schema_root, get_extension_path, STACObject, is_valid_for_schema_
 
 // pub use validate::{is_valid, ValidationTarget};
 
-extern crate stac_core;
+extern crate rustac_core;
 extern crate reqwest;
 extern crate jsonschema;
 extern crate serde_json;
@@ -150,11 +150,11 @@ pub mod error;
 #[cfg(test)]
 mod tests {
     use std::fs;
-    use stac_core::Item;
+    use rustac_core::Item;
     use super::ValidationTarget;
 
     fn get_example(filename: &str) -> String {
-        let path = format!("../stac-examples/{}", filename);
+        let path = format!("./stac-examples/{}", filename);
         fs::read_to_string(&path).unwrap_or_else(|_| panic!("Could not open {}", &path.as_str())) 
     }
 

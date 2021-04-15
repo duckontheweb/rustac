@@ -1,12 +1,12 @@
 use std::fs;
 
 use serde_json::Value;
-use stac_core::{Item, Collection, Catalog};
-use stac_validate::is_valid;
+use rustac_core::{Item, Collection, Catalog};
+use rustac_validate::is_valid;
 
 #[allow(dead_code)]
 pub(crate) fn get_example(filename: &str) -> String {
-    let path = format!("../stac-examples/{}", filename);
+    let path = format!("./stac-examples/{}", filename);
     fs::read_to_string(&path).unwrap_or_else(|_| panic!("Could not open {}", &path.as_str())) 
 }
 
