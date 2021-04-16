@@ -1,6 +1,6 @@
-# `stac-core`
+# `rustac-core`
 
-The `stac-core` crate provides primitive types for working with SpatioTemporal Asset Catalog (STAC)
+The `rustac-core` crate provides primitive types for working with SpatioTemporal Asset Catalog (STAC)
 objects, including:
 
 * [Items](https://github.com/radiantearth/stac-spec/blob/master/item-spec/item-spec.md)
