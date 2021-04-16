@@ -1,27 +1,27 @@
 #![warn(missing_docs)]
 #![deny(clippy::all, clippy::pedantic)]
 #![allow(
-    clippy::module_name_repetitions, 
+    clippy::module_name_repetitions,
     clippy::doc_markdown,
     clippy::upper_case_acronyms
 )]
 //! Tools for validating STAC objects
 
 use rustac_core::{Catalog, Collection, Item};
-use std::convert::From;
 use semver::Version;
 use serde_json::Value;
+use std::convert::From;
 
 use error::STACResult;
-use util::{get_schema_root, get_extension_path, STACObject, is_valid_for_schema_type};
+use util::{get_extension_path, get_schema_root, is_valid_for_schema_type, STACObject};
 
 // pub use validate::{is_valid, ValidationTarget};
 
-extern crate rustac_core;
-extern crate reqwest;
 extern crate jsonschema;
-extern crate serde_json;
+extern crate reqwest;
+extern crate rustac_core;
 extern crate serde;
+extern crate serde_json;
 
 /// Checks if the given instance is valid for all schema types associated with it. This will always
 /// check against the "core" schema for this object and will additionally check against schemas
@@ -47,14 +47,14 @@ extern crate serde;
 /// [`STACError::JSONParse`]: crate::error::STACError::JSONParse
 pub fn is_valid<'a, T>(instance: &'a T) -> STACResult<bool>
 where
-    &'a T: 'a + Into<ValidationTarget<'a>>
+    &'a T: 'a + Into<ValidationTarget<'a>>,
 {
     let target: ValidationTarget = instance.into();
     let schema_uris = &target.schema_uris();
 
     for schema_uri in schema_uris {
         if !is_valid_for_schema_type(&target, schema_uri)? {
-            return Ok(false)
+            return Ok(false);
         }
     }
 
@@ -68,8 +68,7 @@ pub struct ValidationTarget<'a> {
     object: STACObject<'a>,
 }
 
-impl <'a> ValidationTarget<'a> {
-
+impl<'a> ValidationTarget<'a> {
     /// Gets the internal struct as a serialized [`Value`]
     fn serialized_object(&self) -> Value {
         serde_json::to_value(&self.object).unwrap()
@@ -96,11 +95,11 @@ impl <'a> ValidationTarget<'a> {
         if let Some(stac_extensions) = stac_extensions {
             for ext in stac_extensions {
                 if ext.starts_with("https://") {
-                    // If the object uses a full conformance URI as the extension ID (usually after about v1.0.0-rc.1), then just use 
+                    // If the object uses a full conformance URI as the extension ID (usually after about v1.0.0-rc.1), then just use
                     // this as the schema URI...
                     schema_uris.push(ext.as_str().into())
                 } else if let Some(extension_uri) = get_extension_path(ext.as_str(), &self.object) {
-                    // ...otherwise try to map a short extension ID to a schema URI. This may result in a None response if the 
+                    // ...otherwise try to map a short extension ID to a schema URI. This may result in a None response if the
                     // extension ID isn't explicitly mapped in get_extension_path.
                     schema_uris.push(extension_uri);
                 }
@@ -120,42 +119,42 @@ impl <'a> ValidationTarget<'a> {
     }
 }
 
-impl <'a> From<&'a Item> for ValidationTarget<'a> {
+impl<'a> From<&'a Item> for ValidationTarget<'a> {
     fn from(item: &'a Item) -> ValidationTarget<'a> {
         ValidationTarget {
-            object: STACObject::Item(&item)
+            object: STACObject::Item(&item),
         }
     }
 }
 
-impl <'a> From<&'a Collection> for ValidationTarget<'a> {
+impl<'a> From<&'a Collection> for ValidationTarget<'a> {
     fn from(collection: &'a Collection) -> ValidationTarget<'a> {
         ValidationTarget {
-            object: STACObject::Collection(&collection)
+            object: STACObject::Collection(&collection),
         }
     }
 }
 
-impl <'a> From<&'a Catalog> for ValidationTarget<'a> {
+impl<'a> From<&'a Catalog> for ValidationTarget<'a> {
     fn from(catalog: &'a Catalog) -> ValidationTarget<'a> {
         ValidationTarget {
-            object: STACObject::Catalog(&catalog)
+            object: STACObject::Catalog(&catalog),
         }
     }
 }
 
-mod util;
 pub mod error;
+mod util;
 
 #[cfg(test)]
 mod tests {
-    use std::fs;
-    use rustac_core::Item;
     use super::ValidationTarget;
+    use rustac_core::Item;
+    use std::fs;
 
     fn get_example(filename: &str) -> String {
         let path = format!("./stac-examples/{}", filename);
-        fs::read_to_string(&path).unwrap_or_else(|_| panic!("Could not open {}", &path.as_str())) 
+        fs::read_to_string(&path).unwrap_or_else(|_| panic!("Could not open {}", &path.as_str()))
     }
 
     #[test]
@@ -168,7 +167,7 @@ mod tests {
         let schema_uris = target.schema_uris();
 
         assert_eq!(schema_uris.len(), 2);
-        
+
         let eo_uri = String::from("https://stac-extensions.github.io/eo/v1.0.0/schema.json");
         assert!(schema_uris.contains(&eo_uri));
     }

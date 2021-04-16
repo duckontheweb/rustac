@@ -1,23 +1,33 @@
 mod helpers;
-use serde_json::Value;
+use helpers::{get_example, test_example};
 use rustac_core::Item;
 use rustac_validate::is_valid;
-use helpers::{test_example, get_example};
-
-#[test] 
-fn test_core_item() { test_example("core/core-item.json") }
-
-#[test] 
-fn test_simple_item() { test_example("core/simple-item.json") }
+use serde_json::Value;
 
 #[test]
-fn test_extended_item() { test_example("core/extended-item.json") }
+fn test_core_item() {
+    test_example("core/core-item.json")
+}
 
 #[test]
-fn test_collectionless_item() { test_example("core/collectionless-item.json") }
+fn test_simple_item() {
+    test_example("core/simple-item.json")
+}
 
 #[test]
-fn test_eo_extended_item() { test_example("extensions/eo/item.json") }
+fn test_extended_item() {
+    test_example("core/extended-item.json")
+}
+
+#[test]
+fn test_collectionless_item() {
+    test_example("core/collectionless-item.json")
+}
+
+#[test]
+fn test_eo_extended_item() {
+    test_example("extensions/eo/item.json")
+}
 
 #[test]
 #[ignore]
@@ -30,6 +40,6 @@ fn test_invalid_eo_extended_item() {
     let item: Item = serde_json::from_value(value).unwrap();
 
     println!("{}", item.properties.extra_fields);
-    
+
     assert!(!is_valid(&item).unwrap());
 }

@@ -1,7 +1,7 @@
 //! Possible errors when working with STAC objects.
 use std::error;
-use std::result;
 use std::fmt;
+use std::result;
 use std::str::FromStr;
 
 /// Alias for [`result::Result`] that uses a [`STACError`]
@@ -38,8 +38,7 @@ impl fmt::Display for STACError {
             STACError::Compilation(source) => source.fmt(f),
             STACError::Other(message) => {
                 write!(f, "{}", message.as_str())
-            },
-
+            }
         }
     }
 }
@@ -65,9 +64,13 @@ impl From<semver::SemVerError> for STACError {
 }
 
 impl From<reqwest::Error> for STACError {
-    fn from (err: reqwest::Error) -> STACError { STACError::HTTP(err) }
+    fn from(err: reqwest::Error) -> STACError {
+        STACError::HTTP(err)
+    }
 }
 
 impl From<jsonschema::CompilationError> for STACError {
-    fn from (err: jsonschema::CompilationError) -> STACError { STACError::Compilation(err) }
+    fn from(err: jsonschema::CompilationError) -> STACError {
+        STACError::Compilation(err)
+    }
 }
