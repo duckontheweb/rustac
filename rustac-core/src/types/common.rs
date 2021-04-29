@@ -4,7 +4,7 @@ use serde_json::Value;
 
 /// Attributes described by the [STAC Common Metadata spec](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/common-metadata.md).
 /// These attributes may apply to a STAC Item or Asset.
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct CommonMetadata {
     /// A human readable title describing the Item.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -75,7 +75,7 @@ pub struct CommonMetadata {
 
 /// Represents a [STAC Asset Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md#asset-object)
 /// that may be used by either an Item or a Collection.
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Asset {
     /// URI to the asset object. Relative and absolute URI are both allowed.
     pub href: String,
@@ -112,7 +112,7 @@ pub struct Asset {
 
 /// Represents a [STAC Link Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md#link-object). This type
 /// may be used for Collection, Catalog, Item, or ItemCollection links.
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Link {
     /// The actual link in the format of an URL. Relative and absolute links are both allowed.
     pub href: String,
@@ -137,7 +137,7 @@ pub struct Link {
 
 /// Represents a [Provider Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md#provider-object). This object
 /// may be used in the `"providers"` attribute of a Collection and the Common Metadata of an Item.
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Provider {
     /// The name of the organization or the individual.
     pub name: String,
@@ -156,7 +156,7 @@ pub struct Provider {
 }
 
 /// Allowed `"roles"` values for a [`Provider`] object.
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(untagged)]
 pub enum ProviderRoles {
     /// Maps to the `"licensor"` value

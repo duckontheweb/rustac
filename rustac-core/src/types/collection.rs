@@ -11,7 +11,7 @@ use crate::types::common::Link;
 use crate::types::common::Provider;
 
 /// Representation of a [STAC Collection](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md).
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Collection {
     /// The STAC version the Collection implements.
     pub stac_version: Version,
@@ -68,7 +68,7 @@ pub struct Collection {
 }
 
 /// Representation of [Extent Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md#extent-object)
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Extent {
     /// Potential spatial extents covered by the Collection.
     pub spatial: SpatialExtent,
@@ -77,14 +77,14 @@ pub struct Extent {
 }
 
 /// Representation of [Spatial Extent Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md#spatial-extent-object)
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SpatialExtent {
     /// Potential spatial extents covered by the Collection.
     pub bbox: Vec<Bbox>,
 }
 
 /// Implementation of [Temporal Extent Object](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/collection-spec/collection-spec.md#temporal-extent-object)
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct TemporalExtent {
     /// Potential temporal extents covered by the Collection.
     pub interval: Vec<Vec<Option<String>>>,

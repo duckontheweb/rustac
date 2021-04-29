@@ -11,7 +11,7 @@ use super::common::CommonMetadata;
 use super::common::Link;
 
 /// Representation of a [STAC Item](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md).
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Item {
     /// The STAC version the Item implements.
     pub stac_version: Version,
@@ -55,7 +55,7 @@ pub struct Item {
 
 /// Additional metadata fields associated with the [`Item`] as described in the [Properties Object
 /// spec](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md#properties-object)
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct ItemProperties {
     /// Fields that are part of the [Common Metadata](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/common-metadata.md#date-and-time-range)
     #[serde(flatten)]

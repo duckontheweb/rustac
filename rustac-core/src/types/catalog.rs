@@ -7,7 +7,7 @@ use std::collections::HashMap;
 use super::common::Link;
 
 /// Representation of a[STAC Catalog](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/catalog-spec/catalog-spec.md).
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Catalog {
     /// The STAC version the Catalog implements.
     pub stac_version: Version,
