@@ -148,7 +148,7 @@ pub struct Provider {
 
     /// Roles of the provider. Any of `licensor`, `producer`, `processor` or `host`.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub roles: Option<Vec<String>>,
+    pub roles: Option<Vec<ProviderRole>>,
 
     /// Homepage on which the provider describes the dataset and publishes contact information.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -157,22 +157,18 @@ pub struct Provider {
 
 /// Allowed `"roles"` values for a [`Provider`] object.
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(untagged)]
-pub enum ProviderRoles {
+#[serde(rename_all = "lowercase")]
+pub enum ProviderRole {
     /// Maps to the `"licensor"` value
-    #[serde(rename = "licensor")]
     Licensor,
 
     /// Maps to the `"producer"` value
-    #[serde(rename = "producer")]
     Producer,
 
     /// Maps to the `"processor"` value
-    #[serde(rename = "processor")]
     Processor,
 
     /// Maps to the `"host"` value
-    #[serde(rename = "host")]
     Host,
 }
 
