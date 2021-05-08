@@ -30,7 +30,6 @@ fn test_eo_extended_item() {
 }
 
 #[test]
-#[ignore]
 // jsonschema is saying it is valid this even though it is not
 // See https://github.com/Stranger6667/jsonschema-rs/issues/183 for details
 fn test_invalid_eo_extended_item() {

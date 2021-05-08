@@ -9,7 +9,7 @@ edition = "2018"
 [dependencies]
 rustac-core = { git = "ssh://git@github.com/rustac/rustac-core.git", branch = "main" }
 reqwest = { version = "0.11", features = ["json", "blocking"] }
-jsonschema = { version = "^0.6.1", features = ["reqwest"] }
+jsonschema = { version = "0.9", features = ["reqwest"] }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 semver = { version = "0.11", features = ["serde"] }

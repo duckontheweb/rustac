@@ -13,5 +13,5 @@ fn test_collection_only() {
 
 #[test]
 fn test_extensions_collection() {
-    test_example("core/extensions-collection/proj-example/proj-example.json")
+    test_example("core/extensions-collection/collection.json")
 }
