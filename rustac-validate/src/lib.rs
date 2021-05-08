@@ -152,14 +152,10 @@ mod tests {
     use rustac_core::Item;
     use std::fs;
 
-    fn get_example(filename: &str) -> String {
-        let path = format!("./stac-examples/{}", filename);
-        fs::read_to_string(&path).unwrap_or_else(|_| panic!("Could not open {}", &path.as_str()))
-    }
-
     #[test]
     fn test_schema_uris() {
-        let data = get_example("extensions/eo/item.json");
+        let data = fs::read_to_string("./tests/scientific-extension/examples/item.json")
+            .expect("file to exist");
         let item: Item = serde_json::from_str(data.as_str()).unwrap();
 
         let target = ValidationTarget::from(&item);
@@ -168,7 +164,8 @@ mod tests {
 
         assert_eq!(schema_uris.len(), 2);
 
-        let eo_uri = String::from("https://stac-extensions.github.io/eo/v1.0.0/schema.json");
-        assert!(schema_uris.contains(&eo_uri));
+        let scientific_uri =
+            String::from("https://stac-extensions.github.io/scientific/v1.0.0/schema.json");
+        assert!(schema_uris.contains(&scientific_uri));
     }
 }
