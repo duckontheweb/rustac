@@ -1,6 +1,6 @@
-[submodule "stac-repos/stac-spec"]
-	path = stac-repos/stac-spec
+[submodule "stac-examples/stac-spec"]
+	path = stac-examples/stac-spec
 	url = https://github.com/radiantearth/stac-spec.git
-[submodule "stac-repos/scientific"]
-	path = stac-repos/scientific
+[submodule "stac-examples/scientific"]
+	path = stac-examples/scientific
 	url = https://github.com/stac-extensions/scientific.git
