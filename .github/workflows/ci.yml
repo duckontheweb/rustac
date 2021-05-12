@@ -1,0 +1,94 @@
+name: ci
+
+on:
+  pull_request: {}
+  push:
+    branches:
+      - main
+
+jobs:
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        toolchain:
+          - stable
+          - nightly
+    
+    name: Test (${{ matrix.toolchain }}) on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          override: true
+          profile: minimal
+      
+      - run: cargo test --no-fail-fast
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+          override: true
+      
+      - name: Install tarpaulin
+        run: cargo install cargo-tarpaulin
+      
+      - name: Generate coverage
+        run: cargo +nightly tarpaulin --verbose --all-features --out Xml
+
+      - name: Upload to codecov
+        uses: codecov/codecov-action@v1
+        if: ${{ env.GITHUB_REPOSITORY }} == 'duckontheweb/rustac'
+        with:
+          name: coverage
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+          components: clippy
+
+      - run: cargo clippy --all-features -- -D warnings
+
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          override: true
+          components: rustfmt
+
+      - run: cargo fmt --all -- --check
