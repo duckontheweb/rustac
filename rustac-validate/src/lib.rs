@@ -154,7 +154,7 @@ mod tests {
 
     #[test]
     fn test_schema_uris() {
-        let data = fs::read_to_string("./tests/scientific-extension/examples/item.json")
+        let data = fs::read_to_string("./tests/stac-examples/scientific/item.json")
             .expect("file to exist");
         let item: Item = serde_json::from_str(data.as_str()).unwrap();
 

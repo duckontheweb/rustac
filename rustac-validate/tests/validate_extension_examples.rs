@@ -8,7 +8,7 @@ use test_case::test_case;
 #[test_case("collection.json")]
 #[test_case("item.json")]
 fn validate_core_example(path: &str) {
-    let data = get_example("scientific-extension", path);
+    let data = get_example("scientific", path);
     let value: Value = serde_json::from_str(data.as_str()).unwrap();
     let stac_type = value["type"].as_str().unwrap();
 
