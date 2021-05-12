@@ -34,7 +34,7 @@
 //!
 //! STAC objects may contain fields not included in the core STAC spec itself. These fields are not serialized into
 //! "primitive" Rust types, but instead are flattened into a [`serde_json::Value`] in the `extra_fields` field
-//! on the `struct`. *This includes fields that may be defined as part of a [STAC Extension].* I plan on adding support 
+//! on the `struct`. *This includes fields that may be defined as part of a [STAC Extension].* I plan on adding support
 //! for accessing extension fields as Rust types in a separate `stac-extensions` crate.
 //!
 //! ## Validation
