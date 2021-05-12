@@ -1,0 +1,6 @@
+[submodule "tests/stac-spec"]
+	path = tests/stac-spec
+	url = https://github.com/radiantearth/stac-spec.git
+[submodule "tests/scientific-extension"]
+	path = tests/scientific-extension
+	url = https://github.com/stac-extensions/scientific.git
