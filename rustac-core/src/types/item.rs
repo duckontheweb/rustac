@@ -24,8 +24,7 @@ pub struct Item {
     pub id: String,
 
     /// Type of the GeoJSON Object. MUST be set to `"Feature"`.
-    #[serde(rename = "type")]
-    pub type_: String,
+    pub r#type: String,
 
     /// Defines the full footprint of the asset represented by this item. Coordinates are specified in Longitude/Latitude or Longitude/Latitude/Elevation based on WGS 84.
     pub geometry: Geometry,

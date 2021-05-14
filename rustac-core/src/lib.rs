@@ -111,7 +111,7 @@
 //!   let item: Item = serde_json::from_value(example)?;
 //!
 //!   assert_eq!(item.stac_version, Version::parse("1.0.0-rc.2")?);
-//!   assert_eq!(item.type_, String::from("Feature"));
+//!   assert_eq!(item.r#type, String::from("Feature"));
 //!
 //!   Ok(())
 //! }
