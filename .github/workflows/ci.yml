@@ -1,10 +1,20 @@
 name: ci
 
 on:
-  pull_request: {}
+  pull_request:
+    
+    paths-ignore:
+      - "**.md"
+      - "**/LICENSE"
+
   push:
+    
     branches:
       - main
+    
+    paths-ignore:
+      - "**.md"
+      - "**/LICENSE"
 
 jobs:
 
@@ -13,9 +23,9 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          # - ubuntu-latest
+          - ubuntu-latest
           - macos-latest
-          # - windows-latest
+          - windows-latest
         toolchain:
           - stable
           # - nightly
@@ -48,14 +58,14 @@ jobs:
 
       - uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: stable
           override: true
       
-      - name: Install tarpaulin
-        run: cargo install cargo-tarpaulin
-      
       - name: Generate coverage
-        run: cargo +nightly tarpaulin --verbose --all-features --out Xml
+        uses: actions-rs/tarpaulin@v0.1
+        with:
+          version: '0.16.0'
+          args: '--verbose --all-features --out Xml'
 
       - name: Upload to codecov
         uses: codecov/codecov-action@v1
