@@ -61,8 +61,14 @@ jobs:
           toolchain: nightly
           override: true
       
+      - name: Cache cargo-tarpaulin
+        uses: actions/cache@v2
+        with:
+          path: ~/.cargo/bin
+          key: ${{ runner.os }}-cargo-tarpaulin-0.16.0
+
       - name: Install tarpaulin
-        run: cargo install cargo-tarpaulin
+        run: cargo install cargo-tarpaulin --version 0.16.0
       
       - name: Generate coverage
         run: cargo +nightly tarpaulin --verbose --all-features --out Xml
