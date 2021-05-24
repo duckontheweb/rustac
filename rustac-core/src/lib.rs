@@ -48,11 +48,11 @@
 //!
 //! ```
 //! use rustac_core::Item;
-//! use rustac_core::error::{STACError, STACResult};
+//! use rustac_core::error::{Error, Result};
 //! use semver::Version;
 //! use serde_json::json;
 //!
-//! fn main() -> STACResult<()> {
+//! fn main() -> Result<()> {
 //!     let example = json!({
 //!     "stac_version": "1.0.0-rc.2",
 //!     "stac_extensions": [],
