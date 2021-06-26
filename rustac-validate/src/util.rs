@@ -30,21 +30,21 @@ pub(crate) fn get_extension_path(extension_id: &str, stac_type: &STACObject) -> 
     match extension_id {
         "eo" => match stac_type {
             STACObject::Item(_) => Some("extensions/eo/json-schema/schema.json".into()),
-            _ => None,
+            STACObject::Catalog(_) | STACObject::Collection(_) => None,
         },
         "projection" => match stac_type {
             STACObject::Item(_) => Some("extensions/projection/json-schema/schema.json".into()),
-            _ => None,
+            STACObject::Catalog(_) | STACObject::Collection(_) => None,
         },
         "scientific" => match stac_type {
             STACObject::Item(_) | STACObject::Collection(_) => {
                 Some("extensions/scientific/json-schema/schema.json".into())
             }
-            _ => None,
+            STACObject::Catalog(_) => None,
         },
         "view" => match stac_type {
             STACObject::Item(_) => Some("extensions/view/json-schema/schema.json".into()),
-            _ => None,
+            STACObject::Catalog(_) | STACObject::Collection(_) => None,
         },
         _ => None,
     }
