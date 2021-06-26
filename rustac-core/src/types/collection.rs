@@ -18,8 +18,7 @@ pub struct Collection {
 
     /// Must be set to `"Collection"` to be a valid Collection.
     /// **This maps to the STAC `"type"` attribute, which is a reserved keyword.**
-    #[serde(rename = "type")]
-    pub type_: String,
+    pub r#type: String,
 
     /// A list of extension identifiers the Collection implements.
     #[serde(skip_serializing_if = "Option::is_none")]

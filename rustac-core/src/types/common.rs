@@ -91,9 +91,8 @@ pub struct Asset {
     /// [Media type](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md#asset-media-type) of the asset.
     /// See the [common media types](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/best-practices.md#common-media-types-in-stac)
     /// in the best practice doc for commonly used asset types.
-    #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub type_: Option<String>,
+    pub r#type: Option<String>,
 
     /// The [semantic roles](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/item-spec/item-spec.md#asset-role-types) of the asset,
     /// similar to the use of rel in links.
@@ -122,9 +121,8 @@ pub struct Link {
     pub rel: String,
 
     /// [Media type](https://github.com/radiantearth/stac-spec/blob/v1.0.0-rc.1/catalog-spec/catalog-spec.md#media-types) of the referenced entity.
-    #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub type_: Option<String>,
+    pub r#type: Option<String>,
 
     /// A human readable title to be used in rendered displays of the link.
     #[serde(skip_serializing_if = "Option::is_none")]

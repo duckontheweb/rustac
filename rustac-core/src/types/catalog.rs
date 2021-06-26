@@ -14,8 +14,7 @@ pub struct Catalog {
 
     /// Set to Catalog if this Catalog only implements the Catalog spec.
     /// **This maps to the STAC `"type"` attribute, which is a reserved keyword.**
-    #[serde(rename = "type")]
-    pub type_: String,
+    pub r#type: String,
 
     /// A list of extension identifiers the Catalog implements.
     #[serde(skip_serializing_if = "Option::is_none")]
